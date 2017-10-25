@@ -1,29 +1,33 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, MenuController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+//Pages for staff and admin
+import { LoginPage } from './../pages/login/login';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { EventManagementPage } from './../pages/event-management/event-management';
+import { GameManagementPage } from './../pages/game-management/game-management';
+
+//Pages for admin only
+import { AdminAccountManagementPage } from '../pages/admin-account-management/admin-account-management';
+import { AdminAccountApprovalPage } from '../pages/admin-account-approval/admin-account-approval';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  @ViewChild(Nav) nav: Nav;
+  @ViewChild(Nav) navCtrl: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = LoginPage;
 
-  pages: Array<{title: string, component: any}>;
-
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(
+    public platform: Platform, 
+    public menu: MenuController,
+    public statusBar: StatusBar, 
+    public splashScreen: SplashScreen
+  ) {
     this.initializeApp();
-
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
-    ];
 
   }
 
@@ -36,9 +40,27 @@ export class MyApp {
     });
   }
 
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+  goToHome(params){
+    if (!params) params = {};
+    this.navCtrl.setRoot(HomePage);
   }
+  goToEventManagement(params){
+    if (!params) params = {};
+    this.navCtrl.setRoot(EventManagementPage);
+  }
+  goToGameManagement(params){
+    if (!params) params = {};
+    this.navCtrl.setRoot(GameManagementPage);
+  }
+  goToAccountManagement(params){
+    if (!params) params = {};
+    this.navCtrl.setRoot(AdminAccountManagementPage);
+  }
+  goToAdminAccountApproval(params){
+    if (!params) params = {};
+    this.navCtrl.setRoot(AdminAccountApprovalPage);
+  }
+  
+  logOut(){}
+  
 }

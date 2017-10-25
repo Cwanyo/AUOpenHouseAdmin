@@ -2,23 +2,23 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the HomePage page.
+ * Generated class for the AdminAccountManagementPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html',
+  selector: 'page-admin-account-management',
+  templateUrl: 'admin-account-management.html',
 })
-export class HomePage {
+export class AdminAccountManagementPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HomePage');
+    console.log('ionViewDidLoad AdminAccountManagementPage');
   }
 
 }
