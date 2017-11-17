@@ -3,6 +3,9 @@ import { Nav, Platform, MenuController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
+
 //Pages for staff and admin
 import { LoginPage } from './../pages/login/login';
 import { HomePage } from '../pages/home/home';
@@ -21,14 +24,29 @@ export class MyApp {
 
   rootPage: any = LoginPage;
 
+  private user: firebase.User;
+
   constructor(
     public platform: Platform, 
     public menu: MenuController,
     public statusBar: StatusBar, 
-    public splashScreen: SplashScreen
+    public splashScreen: SplashScreen,
+    private afAuth: AngularFireAuth
   ) {
     this.initializeApp();
+    this.userAuth();
+  }
 
+  userAuth(){
+    this.afAuth.authState.subscribe(user => {
+      if (!user) {
+        this.user = null;
+        //Re-direct to Login 
+        this.navCtrl.setRoot(LoginPage);
+        return;
+      }
+      this.user = user;
+    });
   }
 
   initializeApp() {
@@ -61,6 +79,10 @@ export class MyApp {
     this.navCtrl.setRoot(AdminAccountApprovalPage);
   }
   
-  logOut(){}
+  logout() {
+    this.afAuth.auth.signOut()
+    .then(result => console.log("Sign-out",result))
+    .catch(error => console.log("Error Sing-out",error));
+  }
   
 }

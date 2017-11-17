@@ -4,11 +4,21 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 
+//Firebase
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+
 //Pages for staff and admin
 import { LoginPage } from './../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { EventManagementPage } from './../pages/event-management/event-management';
 import { GameManagementPage } from './../pages/game-management/game-management';
+
+import { environment } from '../environments/environment';
+
+import { HttpClientModule } from '@angular/common/http';
 
 //Pages for admin only
 import { AdminAccountManagementPage } from '../pages/admin-account-management/admin-account-management';
@@ -30,6 +40,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
+    HttpClientModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -44,6 +59,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
+    AngularFireDatabase,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
