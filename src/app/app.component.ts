@@ -16,6 +16,8 @@ import { GameManagementPage } from './../pages/game-management/game-management';
 import { AdminAccountManagementPage } from '../pages/admin-account-management/admin-account-management';
 import { AdminAccountApprovalPage } from '../pages/admin-account-approval/admin-account-approval';
 
+import { RestApiProvider } from '../providers/rest-api/rest-api';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -32,7 +34,8 @@ export class MyApp {
     public menu: MenuController,
     public statusBar: StatusBar, 
     public splashScreen: SplashScreen,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private restApiProvider: RestApiProvider
   ) {
     this.initializeApp();
     this.userAuth();
@@ -84,6 +87,11 @@ export class MyApp {
   logout() {
     this.afAuth.auth.signOut()
     .then(result => console.log("Sign-out",result))
+    .then(() => {
+      this.restApiProvider.logout()
+      .then(result => console.log("Logout from api"))
+      .catch(error => console.log("Error logout from api"));
+    })
     .catch(error => console.log("Error Sing-out",error));
   }
   

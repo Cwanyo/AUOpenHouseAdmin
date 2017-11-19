@@ -14,22 +14,36 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class RestApiProvider {
 
+  public url = 'https://auopenhouse.herokuapp.com/api/authority'
+
   constructor(public http: HttpClient) {
     console.log('Hello RestApiProvider Provider');
   }
 
   login(idToken: string){
-    let url = 'https://auopenhouse.herokuapp.com/api/authority/login';
+    let path = this.url+'/login';
 
     return new Promise((resolve, reject) => {
-      this.http.put(url, {idToken:idToken})
+      this.http.put(path, {idToken:idToken})
       .subscribe(res => {
         resolve(res);
       }, (err) => {
         reject(err);
       });
     });
+  }
 
+  logout(){
+    let path = this.url+'/logout';
+
+    return new Promise((resolve, reject) => {
+      this.http.get(path)
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
   }
 
   /*getLicensePlate(image:any){

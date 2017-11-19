@@ -126,8 +126,4 @@ export class LoginPage {
     .catch(error => console.log("Error Sing-out",error));
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
-  }
-
 }
