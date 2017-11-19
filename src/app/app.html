@@ -5,12 +5,10 @@
         <div *ngIf="user != null" class="profile-details">
             <a style="display:block;">
                 <img src="{{user.photoURL}}" style="display:block;width:50%;height:auto;margin-left:auto;margin-right:auto;" />
-                <!--<img id="menu-user-profile-pic" src="../assets/img/aTBVk5T8uW9fzURBaSrQ_user.png" />-->
             </a>
-            <!--<h2 id="menu-user-role">| Admin |</h2>-->
+            <h2 id="menu-user-role">| {{userRole}} |</h2>
             <h2 id="menu-user-name">
                 {{user.displayName}}
-                <!--CHATCHAWAN YOOJUIE-->
             </h2>
         </div>
 
@@ -31,16 +29,18 @@
             </ion-item>
         </ion-list>
 
-        <ion-list>
-            <ion-item color="none" menuClose="" on-click="goToAccountManagement()" class="side-menu-item">
-                <ion-icon name="people" item-left></ion-icon>
-                Account Management
-            </ion-item>
-            <ion-item color="none" menuClose="" on-click="goToAdminAccountApproval()" class="side-menu-item">
-                <ion-icon name="person-add" item-left></ion-icon>
-                Account Approval
-            </ion-item>
-        </ion-list>
+        <div *ngIf="userRole == 'ADMIN'">
+            <ion-list>
+                <ion-item color="none" menuClose="" on-click="goToAccountManagement()" class="side-menu-item">
+                    <ion-icon name="people" item-left></ion-icon>
+                    Account Management
+                </ion-item>
+                <ion-item color="none" menuClose="" on-click="goToAdminAccountApproval()" class="side-menu-item">
+                    <ion-icon name="person-add" item-left></ion-icon>
+                    Account Approval
+                </ion-item>
+            </ion-list>
+        </div>
 
         <ion-item color="none" menuClose="" on-click="logout()" class="side-menu-item">
             <ion-icon name="log-out" item-left></ion-icon>

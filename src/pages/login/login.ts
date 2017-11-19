@@ -34,6 +34,7 @@ export class LoginPage {
   ) {
     //TODO - disable menu bar on login page
     this.menu.enable(false);
+    this.userAuth();
   }
 
   userAuth(){
@@ -60,6 +61,7 @@ export class LoginPage {
         if(jsonData.isSuccess){
           //if account verify then Re-direct to Home
           this.menu.enable(true);
+          localStorage.setItem("userRole", jsonData.role);
           this.navCtrl.setRoot(HomePage);
         }
       }).catch(error => {
@@ -106,13 +108,13 @@ export class LoginPage {
       .then(() => {
         this.afAuth.auth.getRedirectResult()
         .then(result => console.log("Logged-in with "+provider,result))
-        .then(() => this.userAuth())
+        //.then(() => this.userAuth())
         .catch(error => console.log("Error Sing-in with "+provider,error));
       });
     }else{
       this.afAuth.auth.signInWithPopup(signInProvider)
       .then(result => console.log("Logged-in with "+provider,result))
-      .then(() => this.userAuth())
+      //.then(() => this.userAuth())
       .catch(error => console.log("Error Sing-in with "+provider,error));
     }
 

@@ -25,6 +25,7 @@ export class MyApp {
   rootPage: any = LoginPage;
 
   private user: firebase.User;
+  private userRole: string;
 
   constructor(
     public platform: Platform, 
@@ -46,6 +47,7 @@ export class MyApp {
         return;
       }
       this.user = user;
+      this.userRole = localStorage.getItem('userRole').toUpperCase();
     });
   }
 
