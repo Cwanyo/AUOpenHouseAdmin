@@ -20,6 +20,9 @@ import { environment } from '../environments/environment';
 
 import { HttpClientModule } from '@angular/common/http';
 
+//RESTAPI
+import { RestApiProvider } from '../providers/rest-api/rest-api';
+
 //Pages for admin only
 import { AdminAccountManagementPage } from '../pages/admin-account-management/admin-account-management';
 import { AdminAccountApprovalPage } from '../pages/admin-account-approval/admin-account-approval';
@@ -60,6 +63,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     StatusBar,
     SplashScreen,
     AngularFireDatabase,
+    RestApiProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
