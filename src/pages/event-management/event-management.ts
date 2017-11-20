@@ -15,7 +15,8 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
 })
 export class EventManagementPage {
 
-  public events: any;
+  public events = [];
+  public faculties = [];
 
   constructor(
     public navCtrl: NavController,
@@ -29,7 +30,10 @@ export class EventManagementPage {
   getListOfEvents(){
     this.restApiProvider.getEvents()
     .then(result => {
-      this.events = result;
+      this.faculties = Object.keys(this.groupByFaculty(result));
+      this.events = this.groupByFaculty(result);
+      console.log(this.faculties);
+      console.log(this.events);
     })
     .catch(error =>{
       console.log("ERROR API : getEvents",error);
@@ -37,4 +41,20 @@ export class EventManagementPage {
     
   }
 
+  groupByFaculty(facultyValues){
+    return facultyValues.reduce((groups, facultyed) => {
+      let key = "All";
+      if(facultyed.Faculty_Name){
+        key = facultyed.Faculty_Name;
+      }
+      if (groups[key]) {
+        groups[key].push(facultyed);
+      } else {
+        groups[key] = [facultyed];
+      }
+      return groups;
+    }, {});
+  }
+
 }
+
