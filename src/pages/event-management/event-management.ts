@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController  } from 'ionic-angular'
 
+import { CreateEventPage } from './../create-event/create-event';
+
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
 import {Observable} from 'rxjs/Rx';
@@ -66,6 +68,12 @@ export class EventManagementPage {
       }
       return groups;
     }, {});
+  }
+
+  createEvent(param){
+    if (!param) param = {};
+    console.log("create")
+    this.navCtrl.push(CreateEventPage);
   }
 
   eventDetails(eid: number){

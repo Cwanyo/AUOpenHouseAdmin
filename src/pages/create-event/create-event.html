@@ -1,0 +1,52 @@
+<!--
+  Generated template for the CreateEventPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Create Event</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-item>
+        <ion-label floating>Name of the event</ion-label>
+        <ion-input type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Event info</ion-label>
+        <ion-textarea></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>Faculty</ion-label>
+        <ion-select [(ngModel)]="Faculty" (ionChange)="hintMajors(Faculty)">
+            <ion-option value="-1">All</ion-option>
+            <ion-option *ngFor="let f of listFaculties" value="{{f.FID}}">{{f.Name}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Major</ion-label>
+        <ion-select [(ngModel)]="Major">
+            <ion-option value="-1">All</ion-option>
+            <ion-option *ngFor="let m of listMajors" value="{{m.MID}}">{{m.Name}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <div>
+        <ion-item>
+            <ion-label>Start</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD HH:mm" min="{{MinTime}}" max="{{MaxTime}}" [(ngModel)]="EventTime"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label>End</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD HH:mm" min="{{MinTime}}" max="{{MaxTime}}" [(ngModel)]="EventTime"></ion-datetime>
+        </ion-item>
+    </div>
+
+</ion-content>

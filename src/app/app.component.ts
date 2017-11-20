@@ -11,6 +11,7 @@ import { LoginPage } from './../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { EventManagementPage } from './../pages/event-management/event-management';
 import { GameManagementPage } from './../pages/game-management/game-management';
+import { CreateEventPage } from '../pages/create-event/create-event';
 
 //Pages for admin only
 import { AdminAccountManagementPage } from '../pages/admin-account-management/admin-account-management';
@@ -25,6 +26,7 @@ export class MyApp {
   @ViewChild(Nav) navCtrl: Nav;
 
   rootPage: any = LoginPage;
+  //rootPage: any = CreateEventPage;
 
   private user: firebase.User;
   private userRole: string;

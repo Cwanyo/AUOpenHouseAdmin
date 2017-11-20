@@ -18,6 +18,12 @@
 
 <ion-content padding>
 
+    <button ion-button block (click)=createEvent()>
+        <ion-icon name="create"></ion-icon>&nbsp;Create
+    </button>
+
+    <div class="spacer"></div>
+
     <ion-list>
 
         <ion-item-group *ngFor="let faculty of faculties">

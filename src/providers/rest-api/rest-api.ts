@@ -59,6 +59,46 @@ export class RestApiProvider {
       });
     });
   }
+
+  getFacultiesAndMajors(){
+    let path = this.url+'/facultiesAndMajors';
+    
+    return new Promise((resolve, reject) => {
+      this.http.get(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  getFaculties(){
+    let path = this.url+'/faculties';
+    
+    return new Promise((resolve, reject) => {
+      this.http.get(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  getMajorsInFaculty(fid: number){
+    let path = this.url+'/faculties/'+fid+'/majors';
+    
+    return new Promise((resolve, reject) => {
+      this.http.get(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
   /*getLicensePlate(image:any){
     let apiUrl = 'https://api.openalpr.com/v2/recognize_bytes';
     let params = new HttpParams();
