@@ -18,4 +18,86 @@
 
 <ion-content padding>
 
+    <ion-list>
+
+        <ion-item-group>
+            <ion-item-divider color="light">A</ion-item-divider>
+
+            <ion-item-sliding>
+                <ion-item (click)="eventDetails(event)">
+                    <ion-thumbnail item-left>
+                        <img src="assets/img/event.png" />
+                    </ion-thumbnail>
+                    <h2>Go to the court</h2>
+                </ion-item>
+                <ion-item-options side="right">
+                    <button ion-button (click)="edit(event)">
+                    <ion-icon name="create"></ion-icon>Edit
+                </button>
+                    <button ion-button color="danger" (click)="delete(event)">
+                    <ion-icon name="trash"></ion-icon>Delete
+                </button>
+                </ion-item-options>
+            </ion-item-sliding>
+
+            <ion-item-sliding>
+                <ion-item (click)="eventDetails(event)">
+                    <ion-thumbnail item-left>
+                        <img src="assets/img/event.png" />
+                    </ion-thumbnail>
+                    <h2>Go to the court</h2>
+                </ion-item>
+                <ion-item-options side="right">
+                    <button ion-button (click)="edit(event)">
+                        <ion-icon name="create"></ion-icon>Edit
+                    </button>
+                    <button ion-button color="danger" (click)="delete(event)">
+                        <ion-icon name="trash"></ion-icon>Delete
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding>
+
+        </ion-item-group>
+
+        <ion-item-group>
+            <ion-item-divider color="light">B</ion-item-divider>
+
+            <ion-item-sliding>
+                <ion-item (click)="eventDetails(event)">
+                    <ion-thumbnail item-left>
+                        <img src="assets/img/event.png" />
+                    </ion-thumbnail>
+                    <h2>Go to the court</h2>
+                </ion-item>
+                <ion-item-options side="right">
+                    <button ion-button (click)="edit(event)">
+                        <ion-icon name="create"></ion-icon>Edit
+                    </button>
+                    <button ion-button color="danger" (click)="delete(event)">
+                        <ion-icon name="trash"></ion-icon>Delete
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding>
+
+            <ion-item-sliding>
+                <ion-item (click)="eventDetails(event)">
+                    <ion-thumbnail item-left>
+                        <img src="assets/img/event.png" />
+                    </ion-thumbnail>
+                    <h2>Go to the court</h2>
+                </ion-item>
+                <ion-item-options side="right">
+                    <button ion-button (click)="edit(event)">
+                            <ion-icon name="create"></ion-icon>Edit
+                        </button>
+                    <button ion-button color="danger" (click)="delete(event)">
+                            <ion-icon name="trash"></ion-icon>Delete
+                        </button>
+                </ion-item-options>
+            </ion-item-sliding>
+
+        </ion-item-group>
+
+    </ion-list>
+
 </ion-content>
