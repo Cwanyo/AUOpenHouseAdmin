@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, MenuController, Platform, AlertController  } from 'ionic-angular';
+import { NavController, NavParams, MenuController, Platform, AlertController, LoadingController   } from 'ionic-angular';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
@@ -21,6 +21,7 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
 export class LoginPage {
 
   private user: firebase.User;
+  private loader: any;
 
   constructor(
     public navCtrl: NavController, 
@@ -29,7 +30,8 @@ export class LoginPage {
     private afAuth: AngularFireAuth,
     private restApiProvider: RestApiProvider,
     private platform: Platform,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    public loadingCtrl: LoadingController
   ) {
     //TODO - disable menu bar on login page
     this.menu.enable(false);
@@ -48,6 +50,8 @@ export class LoginPage {
   }
 
   summitBackend(){
+    //show loding
+    this.presentLoading();
     //TODO - summit to backend /login
     this.user.getIdToken(true)
     .then(idToken => {
@@ -55,12 +59,15 @@ export class LoginPage {
       .then(data => {
         var jsonData: any = data;
         if(jsonData.isSuccess){
+          //remove loding
+          this.loader.dismiss();
           //if account verify then Re-direct to Home
           this.menu.enable(true);
           localStorage.setItem("userRole", jsonData.role);
           this.navCtrl.setRoot(HomePage);
         }
       }).catch(error => {
+        this.loader.dismiss();
         console.log("ERROR API : login",error);
         var jsonData = JSON.parse(error.error);
         //show error message
@@ -69,6 +76,7 @@ export class LoginPage {
     
     })
     .catch(err => {
+      this.loader.dismiss();
       console.log("ERROR : geting token",err);
     });
   }
@@ -85,6 +93,14 @@ export class LoginPage {
       }]
     });
     alert.present();
+  }
+
+  presentLoading() {
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait...",
+      dismissOnPageChange: true
+    });
+    this.loader.present();
   }
 
   login(provider){
