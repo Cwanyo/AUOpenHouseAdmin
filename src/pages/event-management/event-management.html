@@ -28,7 +28,7 @@
             </ion-item-divider>
 
             <ion-item-sliding *ngFor="let event of events[faculty]">
-                <ion-item (click)="eventDetails(event)">
+                <ion-item (click)="eventDetails(event.EID)">
                     <ion-thumbnail item-left>
                         <img *ngIf="!event.Image" src="assets/img/event.png" />
                         <img *ngIf="event.Image" src={{event.Image}} style="border-radius: 50%;" />
@@ -37,10 +37,10 @@
                     <p>{{event.Info}}</p>
                 </ion-item>
                 <ion-item-options side="right">
-                    <button ion-button (click)="edit(event)">
+                    <button ion-button (click)="eventEdit(event.EID)">
                         <ion-icon name="create"></ion-icon>Edit
                     </button>
-                    <button ion-button color="danger" (click)="delete(event)">
+                    <button ion-button color="danger" (click)="eventDelete(event.EID)">
                         <ion-icon name="trash"></ion-icon>Delete
                     </button>
                 </ion-item-options>

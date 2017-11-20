@@ -56,5 +56,32 @@ export class EventManagementPage {
     }, {});
   }
 
+  eventDetails(eid: number){
+    console.log(eid);
+  }
+
+  eventEdit(eid: number){
+    console.log(eid);
+  }
+
+  eventDelete(eid: number){
+    console.log("Delete event:",eid);
+    let confirm = this.alertCtrl.create({
+      title: "Alert!",
+      message: "Are you sure that you want to delete this event?",
+      buttons: [{
+        text: "Disagree"
+      },{
+        text: "Agree",
+        handler: () => {
+          //TODO - delete the event (use api)
+          console.log('Agree clicked');
+        }
+      }]
+    });
+    confirm.present();
+  }
+
+
 }
 
