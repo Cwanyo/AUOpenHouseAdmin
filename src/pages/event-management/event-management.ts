@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController  } from 'ionic-angular'
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
+
+import {Observable} from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 /**
  * Generated class for the EventManagementPage page.
  *
@@ -17,6 +20,7 @@ export class EventManagementPage {
 
   public events = [];
   public faculties = [];
+  public eventSub: Subscription;
 
   constructor(
     public navCtrl: NavController,
@@ -25,6 +29,16 @@ export class EventManagementPage {
     private alertCtrl: AlertController
   ) {
     this.getListOfEvents();
+    //(sub) auto refresh at 10 sec 
+    this.eventSub = Observable.interval(10000).subscribe(x => {
+      this.getListOfEvents();
+    });
+  }
+
+  ngOnDestroy(){
+    console.log("ngOnDestroy event-management")
+    //(unsub) auto refresh at 10 sec 
+    this.eventSub.unsubscribe();
   }
 
   getListOfEvents(){
@@ -32,8 +46,6 @@ export class EventManagementPage {
     .then(result => {
       this.faculties = Object.keys(this.groupByFaculty(result));
       this.events = this.groupByFaculty(result);
-      console.log(this.faculties);
-      console.log(this.events);
     })
     .catch(error =>{
       console.log("ERROR API : getEvents",error);
