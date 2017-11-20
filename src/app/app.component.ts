@@ -45,8 +45,6 @@ export class MyApp {
     this.afAuth.authState.subscribe(user => {
       if (!user) {
         this.user = null;
-        //Re-direct to Login 
-        this.navCtrl.setRoot(LoginPage);
         return;
       }
       this.user = user;
@@ -89,7 +87,10 @@ export class MyApp {
     .then(result => console.log("Sign-out",result))
     .then(() => {
       this.restApiProvider.logout()
-      .then(result => console.log("Logout from api"))
+      .then(result => {
+        console.log("Logout from api");
+        this.navCtrl.setRoot(LoginPage);
+      })
       .catch(error => console.log("Error logout from api"));
     })
     .catch(error => console.log("Error Sing-out",error));

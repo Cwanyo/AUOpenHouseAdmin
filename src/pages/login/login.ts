@@ -21,7 +21,6 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
 export class LoginPage {
 
   private user: firebase.User;
-  private userCheck: boolean = false;
 
   constructor(
     public navCtrl: NavController, 
@@ -44,16 +43,13 @@ export class LoginPage {
         return;
       }
       this.user = user;
-      if(!this.userCheck){
-        this.userCheck = true;
-        this.summitBackend();
-      }
+      this.summitBackend();
     });
   }
 
   summitBackend(){
     //TODO - summit to backend /login
-    this.user.getToken(true)
+    this.user.getIdToken(true)
     .then(idToken => {
       this.restApiProvider.login(idToken)
       .then(data => {
@@ -65,6 +61,7 @@ export class LoginPage {
           this.navCtrl.setRoot(HomePage);
         }
       }).catch(error => {
+        console.log("ERROR API : login",error);
         var jsonData = JSON.parse(error.error);
         //show error message
         this.presentAlert(jsonData.message);
@@ -108,13 +105,11 @@ export class LoginPage {
       .then(() => {
         this.afAuth.auth.getRedirectResult()
         .then(result => console.log("Logged-in with "+provider,result))
-        //.then(() => this.userAuth())
         .catch(error => console.log("Error Sing-in with "+provider,error));
       });
     }else{
       this.afAuth.auth.signInWithPopup(signInProvider)
       .then(result => console.log("Logged-in with "+provider,result))
-      //.then(() => this.userAuth())
       .catch(error => console.log("Error Sing-in with "+provider,error));
     }
 

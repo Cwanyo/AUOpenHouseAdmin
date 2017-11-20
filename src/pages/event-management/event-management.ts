@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController  } from 'ionic-angular'
 
+import { RestApiProvider } from './../../providers/rest-api/rest-api';
 /**
  * Generated class for the EventManagementPage page.
  *
@@ -14,11 +15,27 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class EventManagementPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  public events: any;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private restApiProvider: RestApiProvider,
+    private alertCtrl: AlertController
+  ) {
+    this.getListOfEvents();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EventManagementPage');
+  getListOfEvents(){
+    this.restApiProvider.getEvents()
+    .then(result => {
+      this.events = result;
+    })
+    .catch(error =>{
+      console.log("ERROR API : getEvents",error);
+    })
+    
   }
+
 
 }
