@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular'
 
 import { CreateEventPage } from './../create-event/create-event';
+import { EditEventPage } from './../edit-event/edit-event';
+
+import { Event } from './../../interface/event';
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
@@ -25,6 +28,8 @@ export class EventManagementPage {
   public events = [];
   public faculties = [];
 
+  public rawListOfEvents;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -32,14 +37,16 @@ export class EventManagementPage {
     private alertCtrl: AlertController,
     public loadingCtrl: LoadingController
   ) {
+  }
+
+  ngOnInit(){
     this.getListOfEvents();
   }
 
   doRefresh(refresher) {
-    console.log('Begin async operation', refresher);
-
     this.restApiProvider.getEvents()
     .then(result => {
+      this.rawListOfEvents = result;
       this.faculties = Object.keys(this.groupByFaculty(result));
       this.events = this.groupByFaculty(result);
       refresher.complete();
@@ -53,8 +60,10 @@ export class EventManagementPage {
   getListOfEvents(){
     this.restApiProvider.getEvents()
     .then(result => {
+      this.rawListOfEvents = result;
       this.faculties = Object.keys(this.groupByFaculty(result));
       this.events = this.groupByFaculty(result);
+      console.log(this.events);
     })
     .catch(error =>{
       console.log("ERROR API : getEvents",error);
@@ -78,16 +87,19 @@ export class EventManagementPage {
 
   createEvent(param){
     if (!param) param = {};
-    console.log("create")
-    this.navCtrl.push(CreateEventPage);
+    console.log("createEvent")
+    this.navCtrl.push(CreateEventPage, {"parentPage": this});
   }
 
   eventDetails(eid: number){
-    console.log(eid);
+    console.log("eventDetails",eid);
   }
 
   eventEdit(eid: number){
-    console.log(eid);
+    console.log("eventEdit",eid);
+    let event: Event = this.rawListOfEvents.find(i => i.EID === eid);
+    
+    this.navCtrl.push(EditEventPage, {event: event, "parentPage": this});
   }
 
   eventDelete(eid: number){

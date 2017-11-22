@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
-import { Event } from './event.interface';
+import { Event } from './../../interface/event';
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 /**
@@ -36,21 +36,20 @@ export class CreateEventPage {
     private alertCtrl: AlertController,
     public loadingCtrl: LoadingController
   ) {
-    this.getListOfFaculties();
-
-    let d = new Date();
-    this.minSelectabledate = d.getFullYear();
-    this.maxSelectabledate = d.getFullYear()+1;
-    
   }
-  
   //TODO - validate time
   //TODO - default timezone
   //TODO - upload Image
   //TODO - add location
 
   ngOnInit(){
-   this.initEvent();
+    this.getListOfFaculties();
+
+    let d = new Date();
+    this.minSelectabledate = d.getFullYear();
+    this.maxSelectabledate = d.getFullYear()+1;
+
+    this.initEvent();
   }
 
   initEvent(){
@@ -85,38 +84,12 @@ export class CreateEventPage {
     control.removeAt(i);
   }
 
-  getListOfFaculties(){
-    this.restApiProvider.getFaculties()
-    .then(result => {
-      this.listFaculties = result;
-    })
-    .catch(error =>{
-      console.log("ERROR API : getFaculties",error);
-    })
-  }
-
-  hintMajors(fid: number){
-    this.eventForm.patchValue({MID:"-1"});
-    if(fid == -1){
-      this.listMajors = null;
-      return;
-    }
-    this.restApiProvider.getMajorsInFaculty(fid)
-    .then(result => {
-      this.listMajors = result;
-    })
-    .catch(error =>{
-      console.log("ERROR API : getMajorsInFaculty",error);
-    })
-  }
-
   addEvent(){
     //get form data
-    let event = this.eventForm.value;
-
+    let event: Event = this.eventForm.value;
+    
     //Change empty to NULL
     if(event.Image == ""){
-      console.log("in")
       event.Image = null;
     }
     if(event.Location_Latitude == ""){
@@ -140,6 +113,8 @@ export class CreateEventPage {
       var jsonData: any = result;
       if(jsonData.isSuccess){
         this.presentAlert(jsonData.message);
+        //refresth list of event on the main event page
+        this.navParams.get("parentPage").getListOfEvents();
         this.navCtrl.pop();
       }
     })
@@ -154,6 +129,47 @@ export class CreateEventPage {
         //show error message
         this.presentAlert(jsonData.message);
       }
+    })
+  }
+
+  submitEvent(){
+    let confirm = this.alertCtrl.create({
+      title: "Alert!",
+      message: "Are you sure that you want to create this event?",
+      buttons: [{
+        text: "Disagree"
+      },{
+        text: "Agree",
+        handler: () => {
+         this.addEvent();
+        }
+      }]
+    });
+    confirm.present();
+  }
+
+  getListOfFaculties(){
+    this.restApiProvider.getFaculties()
+    .then(result => {
+      this.listFaculties = result;
+    })
+    .catch(error =>{
+      console.log("ERROR API : getFaculties",error);
+    })
+  }
+
+  hintMajors(fid: number){
+    this.eventForm.patchValue({MID:"-1"});
+    if(fid == -1){
+      this.listMajors = null;
+      return;
+    }
+    this.restApiProvider.getMajorsInFaculty(fid)
+    .then(result => {
+      this.listMajors = result;
+    })
+    .catch(error =>{
+      console.log("ERROR API : getMajorsInFaculty",error);
     })
   }
 

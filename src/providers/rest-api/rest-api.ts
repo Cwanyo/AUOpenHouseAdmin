@@ -14,8 +14,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class RestApiProvider {
 
-  public url = 'https://auopenhouse.herokuapp.com/api/authority';
-  //public url = 'http://localhost:3000/api/authority';
+  //public url = 'https://auopenhouse.herokuapp.com/api/authority';
+  public url = 'http://localhost:3000/api/authority';
 
   constructor(public http: HttpClient) {
     console.log('Hello RestApiProvider Provider');
@@ -86,6 +86,19 @@ export class RestApiProvider {
     });
   }
 
+  getEventTime(eid: number){
+    let path = this.url+'/events/'+eid+'/times';
+
+    return new Promise((resolve, reject) => {
+      this.http.get(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
   addEvent(event){
     let path = this.url+'/events';
 
@@ -99,9 +112,35 @@ export class RestApiProvider {
     });
   }
 
+  editEvent(event){
+    let path = this.url+'/events';
+
+    return new Promise((resolve, reject) => {
+      this.http.patch(path, {event: event}, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
   deleteEvent(eid: number){
     let path = this.url+'/events/'+eid;
 
+    return new Promise((resolve, reject) => {
+      this.http.delete(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  deleteEventTime(eid: number, tid: number){
+    let path = this.url+'/events/'+eid+'/times/'+tid;
+    
     return new Promise((resolve, reject) => {
       this.http.delete(path, {withCredentials: true})
       .subscribe(res => {
