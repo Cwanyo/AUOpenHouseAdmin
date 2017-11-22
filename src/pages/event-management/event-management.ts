@@ -9,8 +9,6 @@ import { Event } from './../../interface/event';
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
-import {Observable} from 'rxjs/Rx';
-import { Subscription } from 'rxjs/Subscription';
 /**
  * Generated class for the EventManagementPage page.
  *

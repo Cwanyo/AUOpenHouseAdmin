@@ -48,7 +48,11 @@ export class MyApp {
         return;
       }
       this.user = user;
-      this.userRole = localStorage.getItem('userRole').toUpperCase();
+      if(localStorage.getItem('userRole')){
+        this.userRole = localStorage.getItem('userRole').toUpperCase();
+      }else{
+        this.userRole = "NONE";
+      }
     });
   }
 
