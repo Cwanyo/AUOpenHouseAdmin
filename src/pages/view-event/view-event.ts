@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { EditEventPage } from './../edit-event/edit-event';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+
+import { Component } from '@angular/core';
 
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Event } from './../../interface/event';
@@ -7,20 +9,19 @@ import { Event } from './../../interface/event';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
 /**
- * Generated class for the EditEventPage page.
+ * Generated class for the ViewEventPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
 @Component({
-  selector: 'page-edit-event',
-  templateUrl: 'edit-event.html',
+  selector: 'page-view-event',
+  templateUrl: 'view-event.html',
 })
-export class EditEventPage {
+export class ViewEventPage {
 
   public event: Event;
-  public deleteEventTime = [];
 
   private loader: any;
 
@@ -52,8 +53,9 @@ export class EditEventPage {
     this.maxSelectabledate = d.getFullYear()+1;
 
     this.initEvent();
+    this.eventForm.disable();
   }
-  
+
   initEvent(){
     //Change NULL to empty 
     if(this.event.Image == null){
@@ -114,103 +116,6 @@ export class EditEventPage {
     })
   }
 
-  addEventTime() {
-    const control = <FormArray>this.eventForm.controls["Event_Time"];
-    control.push(this.formBuilder.group({
-      Time_Start: ["", [Validators.required]],
-      Time_End: ["", [Validators.required]]
-    }));
-  }
-
-  removeEventTime(i: number) {
-    if(this.eventForm.get('Event_Time').value[i].TID){
-      //if TID is exits and be removed 
-      this.deleteEventTime.push(this.eventForm.get('Event_Time').value[i].TID);
-    }
-    const control = <FormArray>this.eventForm.controls["Event_Time"];
-    control.removeAt(i);
-  }
-
-  submitEvent(){
-    let confirm = this.alertCtrl.create({
-      title: "Alert!",
-      message: "Are you sure that you want to edit this event?",
-      buttons: [{
-        text: "Disagree"
-      },{
-        text: "Agree",
-        handler: () => {
-          //get form data
-          let event: Event = this.eventForm.value;
-          
-          //Change empty to NULL
-          if(event.Image == ""){
-            event.Image = null;
-          }
-          if(event.Location_Latitude == ""){
-            event.Location_Latitude = null;
-          }
-          if(event.Location_Longitude == ""){
-            event.Location_Longitude = null;
-          }
-          if(event.FID == "-1"){
-            event.FID = null;
-          }
-          if(event.MID == "-1"){
-            event.MID = null;
-          }
-          //--
-          this.presentLoading();
-          //delete event if exist
-          this.deleteEvent(Number(event.EID));
-          //edit event
-          this.editEvent(event);
-        }
-      }]
-    });
-    confirm.present();
-    
-  }
-
-  deleteEvent(eid: number){
-    this.deleteEventTime.forEach(tid => {
-      this.restApiProvider.deleteEventTime(eid, tid)
-      .then(result => {
-        console.log("delete event success");
-      })
-      .catch(error =>{
-        console.log("ERROR API : deleteEventTime",error);
-      });
-    });
-  }
-
-  editEvent(event: Event){
-    this.restApiProvider.editEvent(event)
-    .then(result => {
-      this.loader.dismiss();
-      console.log("edit event success");
-      var jsonData: any = result;
-      if(jsonData.isSuccess){
-        this.presentAlert(jsonData.message);
-        //refresth list of event on the main event page
-        this.navParams.get("parentPage").getListOfEvents();
-        this.navCtrl.popToRoot();
-      }
-    })
-    .catch(error =>{
-      this.loader.dismiss();
-      console.log("ERROR API : editEvent",error);
-      if(error.status == 0){
-        //show error message
-        this.presentAlert("Cannot connect to server");
-      }else{
-        var jsonData = JSON.parse(error.error);
-        //show error message
-        this.presentAlert(jsonData.message);
-      }
-    })
-  }
-
   getListOfFaculties(){
     this.restApiProvider.getFaculties()
     .then(result => {
@@ -236,15 +141,11 @@ export class EditEventPage {
     })
   }
 
-  presentAlert(message) {
-    let alert = this.alertCtrl.create({
-      title: 'Alert!',
-      subTitle: message,
-      buttons: [{
-        text: 'Ok'
-      }]
-    });
-    alert.present();
+  eventEdit(eid: number){
+    console.log("editEvent",eid);
+    let event = this.event;
+    
+    this.navCtrl.push(EditEventPage, {event: event, "parentPage":  this.navParams.get("parentPage")});
   }
 
   presentLoading() {

@@ -3,6 +3,7 @@ import { NavController, NavParams, AlertController, LoadingController } from 'io
 
 import { CreateEventPage } from './../create-event/create-event';
 import { EditEventPage } from './../edit-event/edit-event';
+import { ViewEventPage } from './../view-event/view-event';
 
 import { Event } from './../../interface/event';
 
@@ -92,11 +93,14 @@ export class EventManagementPage {
   }
 
   eventDetails(eid: number){
-    console.log("eventDetails",eid);
+    console.log("viewEvent",eid);
+    let event: Event = this.rawListOfEvents.find(i => i.EID === eid);
+    
+    this.navCtrl.push(ViewEventPage, {event: event, "parentPage": this});
   }
 
   eventEdit(eid: number){
-    console.log("eventEdit",eid);
+    console.log("editEvent",eid);
     let event: Event = this.rawListOfEvents.find(i => i.EID === eid);
     
     this.navCtrl.push(EditEventPage, {event: event, "parentPage": this});
