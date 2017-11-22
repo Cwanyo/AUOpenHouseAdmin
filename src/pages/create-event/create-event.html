@@ -14,39 +14,66 @@
 
 
 <ion-content padding>
-    <ion-item>
-        <ion-label floating>Name of the event</ion-label>
-        <ion-input type="text"></ion-input>
-    </ion-item>
-    <ion-item>
-        <ion-label floating>Event info</ion-label>
-        <ion-textarea></ion-textarea>
-    </ion-item>
 
-    <ion-item>
-        <ion-label floating>Faculty</ion-label>
-        <ion-select [(ngModel)]="Faculty" (ionChange)="hintMajors(Faculty)">
-            <ion-option value="-1">All</ion-option>
-            <ion-option *ngFor="let f of listFaculties" value="{{f.FID}}">{{f.Name}}</ion-option>
-        </ion-select>
-    </ion-item>
-    <ion-item>
-        <ion-label floating>Major</ion-label>
-        <ion-select [(ngModel)]="Major">
-            <ion-option value="-1">All</ion-option>
-            <ion-option *ngFor="let m of listMajors" value="{{m.MID}}">{{m.Name}}</ion-option>
-        </ion-select>
-    </ion-item>
-
-    <div>
+    <form [formGroup]="eventForm" novalidate>
         <ion-item>
-            <ion-label>Start</ion-label>
-            <ion-datetime displayFormat="YYYY-MM-DD HH:mm" min="{{MinTime}}" max="{{MaxTime}}" [(ngModel)]="EventTime"></ion-datetime>
+            <ion-label floating>Name of the event</ion-label>
+            <ion-input type="text" formControlName="Name"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label>End</ion-label>
-            <ion-datetime displayFormat="YYYY-MM-DD HH:mm" min="{{MinTime}}" max="{{MaxTime}}" [(ngModel)]="EventTime"></ion-datetime>
+            <ion-label floating>Event info</ion-label>
+            <ion-textarea formControlName="Info"></ion-textarea>
         </ion-item>
-    </div>
+        <ion-item>
+            <ion-label floating>Faculty</ion-label>
+            <ion-select formControlName="FID" (ionChange)="hintMajors(eventForm.get('FID').value)">
+                <ion-option value="-1">All</ion-option>
+                <ion-option *ngFor="let f of listFaculties " value="{{f.FID}}">{{f.Name}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Major</ion-label>
+            <ion-select formControlName="MID">
+                <ion-option value="-1">All</ion-option>
+                <ion-option *ngFor="let m of listMajors" value="{{m.MID}}">{{m.Name}}</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <div formArrayName="Event_Time">
+
+            <div *ngFor="let eventTime of eventForm.controls.Event_Time.controls; let i=index">
+
+                <ion-card>
+                    <ion-card-header text-center>Event Time {{i + 1}}
+                        <ion-icon name="close" *ngIf="eventForm.controls.Event_Time.controls.length > 1" (click)="removeEventTime(i)" style="float: right;"></ion-icon>
+                    </ion-card-header>
+
+                    <ion-card-content [formGroupName]="i">
+                        <ion-item>
+                            <ion-label>Start</ion-label>
+                            <ion-datetime formControlName="Time_Start" displayFormat="YYYY-MM-DD HH:mm" min={{minSelectabledate}} max={{maxSelectabledate}}></ion-datetime>
+                        </ion-item>
+                        <ion-item *ngIf="eventForm.get( 'Event_Time').value[i].Time_Start">
+                            <ion-label>End</ion-label>
+                            <ion-datetime formControlName="Time_End" displayFormat="YYYY-MM-DD HH:mm" min="{{eventForm.get('Event_Time').value[i].Time_Start}}" max={{maxSelectabledate}}></ion-datetime>
+                        </ion-item>
+                    </ion-card-content>
+                </ion-card>
+
+            </div>
+
+            <div style="text-align: center">
+                <button ion-button clear large (click)=addEventTime() color="dark">
+                    <ion-icon  name="add-circle"></ion-icon>
+                </button>
+            </div>
+
+        </div>
+
+    </form>
+
+    <button ion-button full (click)=addEvent() [disabled]="!eventForm.valid" color="secondary">
+        <ion-icon name="create"></ion-icon>&nbsp;Submit
+    </button>
 
 </ion-content>

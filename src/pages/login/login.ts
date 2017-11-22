@@ -20,8 +20,9 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
 })
 export class LoginPage {
 
-  private user: firebase.User;
   private loader: any;
+
+  private user: firebase.User;
 
   constructor(
     public navCtrl: NavController, 
@@ -69,9 +70,14 @@ export class LoginPage {
       }).catch(error => {
         this.loader.dismiss();
         console.log("ERROR API : login",error);
-        var jsonData = JSON.parse(error.error);
-        //show error message
-        this.presentAlert(jsonData.message);
+        if(error.status == 0){
+          //show error message
+          this.presentAlert("Cannot connect to server");
+        }else{
+          var jsonData = JSON.parse(error.error);
+          //show error message
+          this.presentAlert(jsonData.message);
+        }
       });
     
     })

@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { MyApp } from './app.component';
 
 //Firebase
@@ -44,6 +46,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,

@@ -11,6 +11,11 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>Event Management</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="createEvent()">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-navbar>
 
 </ion-header>
@@ -18,11 +23,9 @@
 
 <ion-content padding>
 
-    <button ion-button block (click)=createEvent()>
-        <ion-icon name="create"></ion-icon>&nbsp;Create
-    </button>
-
-    <div class="spacer"></div>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
 
     <ion-list>
 
