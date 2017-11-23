@@ -6,6 +6,8 @@ import * as firebase from 'firebase/app';
 
 import { HomePage } from './../home/home';
 
+import { RequestAccountPage } from '../request-account/request-account';
+
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 import { Subscription } from 'rxjs/Subscription';
 /**
@@ -46,7 +48,7 @@ export class LoginPage {
   }
 
   ngOnDestroy(){
-    console.log("bye beeeee");
+    console.log("ngOnDestroy login")
     this.subAuth.unsubscribe();
   }
 
@@ -119,6 +121,13 @@ export class LoginPage {
       dismissOnPageChange: true
     });
     this.loader.present();
+  }
+
+  requestAccount(params){
+    if (!params) params = {};
+    console.log("requestAccount")
+    this.subAuth.unsubscribe();
+    this.navCtrl.push(RequestAccountPage, {"parentPage": this});
   }
 
   login(provider){

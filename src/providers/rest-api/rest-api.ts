@@ -47,6 +47,19 @@ export class RestApiProvider {
     });
   }
 
+  requestAccount(request){
+    let path = this.url+'/request';
+
+    return new Promise((resolve, reject) => {
+      this.http.put(path, {request: request}, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
   getFaculties(){
     let path = this.url+'/faculties';
     
