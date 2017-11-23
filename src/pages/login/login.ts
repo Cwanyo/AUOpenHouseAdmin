@@ -64,7 +64,8 @@ export class LoginPage {
           this.loader.dismiss();
           //if account verify then Re-direct to Home
           this.menu.enable(true);
-          localStorage.setItem("userRole", jsonData.role);
+          //set session
+          sessionStorage.setItem("userRole", jsonData.role);
           this.navCtrl.setRoot(HomePage);
         }
       }).catch(error => {
@@ -139,7 +140,11 @@ export class LoginPage {
 
   logout() {
     this.afAuth.auth.signOut()
-    .then(result => console.log("Sign-out",result))
+    .then(result => {
+      console.log("Sign-out",result);
+      //clear session
+      sessionStorage.clear();
+    })
     .catch(error => console.log("Error Sing-out",error));
   }
 

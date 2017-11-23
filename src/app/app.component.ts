@@ -18,6 +18,8 @@ import { AdminAccountApprovalPage } from '../pages/admin-account-approval/admin-
 
 import { RestApiProvider } from '../providers/rest-api/rest-api';
 
+import {Observable} from 'rxjs/Rx';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -39,6 +41,7 @@ export class MyApp {
   ) {
     this.initializeApp();
     this.userAuth();
+    this.checkUserRole();
   }
 
   userAuth(){
@@ -48,11 +51,17 @@ export class MyApp {
         return;
       }
       this.user = user;
-      if(localStorage.getItem('userRole')){
-        this.userRole = localStorage.getItem('userRole').toUpperCase();
-      }else{
+    });
+  }
+
+  checkUserRole() {
+    console.log("checkUserRole");
+    Observable.interval(1000).subscribe(() => {
+      if(!sessionStorage.getItem('userRole')){
         this.userRole = "NONE";
+        return;
       }
+      this.userRole = sessionStorage.getItem('userRole').toUpperCase();
     });
   }
 
@@ -93,6 +102,8 @@ export class MyApp {
       this.restApiProvider.logout()
       .then(result => {
         console.log("Logout from api");
+        //clear session
+        sessionStorage.clear();
         this.navCtrl.setRoot(LoginPage);
       })
       .catch(error => console.log("Error logout from api"));
