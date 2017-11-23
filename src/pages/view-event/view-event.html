@@ -23,22 +23,22 @@
     <form [formGroup]="eventForm" novalidate>
         <ion-item>
             <ion-label floating>Title</ion-label>
-            <ion-input type="text" formControlName="Name"></ion-input>
+            <ion-input type="text" formControlName="Name" disabled="true"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label floating>Info</ion-label>
-            <ion-textarea formControlName="Info"></ion-textarea>
+            <ion-textarea formControlName="Info" disabled="true"></ion-textarea>
         </ion-item>
         <ion-item>
             <ion-label floating>Faculty</ion-label>
-            <ion-select formControlName="FID" (ionChange)="hintMajors(eventForm.get('FID').value)">
+            <ion-select formControlName="FID" (ionChange)="hintMajors(eventForm.get('FID').value)" disabled="true">
                 <ion-option value="-1">All</ion-option>
                 <ion-option *ngFor="let f of listFaculties " value="{{f.FID}}">{{f.Name}}</ion-option>
             </ion-select>
         </ion-item>
         <ion-item>
             <ion-label floating>Major</ion-label>
-            <ion-select formControlName="MID">
+            <ion-select formControlName="MID" disabled="true">
                 <ion-option value="-1">All</ion-option>
                 <ion-option *ngFor="let m of listMajors" value="{{m.MID}}">{{m.Name}}</ion-option>
             </ion-select>
