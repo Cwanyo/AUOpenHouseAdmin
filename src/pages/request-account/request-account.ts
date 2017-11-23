@@ -138,7 +138,7 @@ export class RequestAccountPage {
       var jsonData: any = result;
       if(jsonData.isSuccess){
         this.presentAlert(jsonData.message);
-        this.navCtrl.pop();
+        //this.navCtrl.pop();
       }
     })
     .catch(error =>{
