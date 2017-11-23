@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
+import { ReactiveFormsModule } from '@angular/forms';
+
 import { MyApp } from './app.component';
 
 //Firebase
@@ -15,6 +17,8 @@ import { LoginPage } from './../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { EventManagementPage } from './../pages/event-management/event-management';
 import { CreateEventPage } from '../pages/create-event/create-event';
+import { EditEventPage } from './../pages/edit-event/edit-event';
+import { ViewEventPage } from './../pages/view-event/view-event';
 import { GameManagementPage } from './../pages/game-management/game-management';
 
 import { environment } from '../environments/environment';
@@ -38,12 +42,15 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HomePage,
     EventManagementPage,
     CreateEventPage,
+    EditEventPage,
+    ViewEventPage,
     GameManagementPage,
     AdminAccountManagementPage,
     AdminAccountApprovalPage
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
@@ -58,6 +65,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HomePage,
     EventManagementPage,
     CreateEventPage,
+    EditEventPage,
+    ViewEventPage,
     GameManagementPage,
     AdminAccountManagementPage,
     AdminAccountApprovalPage

@@ -20,8 +20,9 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
 })
 export class LoginPage {
 
-  private user: firebase.User;
   private loader: any;
+
+  private user: firebase.User;
 
   constructor(
     public navCtrl: NavController, 
@@ -63,15 +64,21 @@ export class LoginPage {
           this.loader.dismiss();
           //if account verify then Re-direct to Home
           this.menu.enable(true);
-          localStorage.setItem("userRole", jsonData.role);
+          //set session
+          sessionStorage.setItem("userRole", jsonData.role);
           this.navCtrl.setRoot(HomePage);
         }
       }).catch(error => {
         this.loader.dismiss();
         console.log("ERROR API : login",error);
-        var jsonData = JSON.parse(error.error);
-        //show error message
-        this.presentAlert(jsonData.message);
+        if(error.status == 0){
+          //show error message
+          this.presentAlert("Cannot connect to server");
+        }else{
+          var jsonData = JSON.parse(error.error);
+          //show error message
+          this.presentAlert(jsonData.message);
+        }
       });
     
     })
@@ -133,7 +140,11 @@ export class LoginPage {
 
   logout() {
     this.afAuth.auth.signOut()
-    .then(result => console.log("Sign-out",result))
+    .then(result => {
+      console.log("Sign-out",result);
+      //clear session
+      sessionStorage.clear();
+    })
     .catch(error => console.log("Error Sing-out",error));
   }
 

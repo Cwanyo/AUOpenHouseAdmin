@@ -11,13 +11,14 @@ import { LoginPage } from './../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { EventManagementPage } from './../pages/event-management/event-management';
 import { GameManagementPage } from './../pages/game-management/game-management';
-import { CreateEventPage } from '../pages/create-event/create-event';
 
 //Pages for admin only
 import { AdminAccountManagementPage } from '../pages/admin-account-management/admin-account-management';
 import { AdminAccountApprovalPage } from '../pages/admin-account-approval/admin-account-approval';
 
 import { RestApiProvider } from '../providers/rest-api/rest-api';
+
+import {Observable} from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,7 +27,6 @@ export class MyApp {
   @ViewChild(Nav) navCtrl: Nav;
 
   rootPage: any = LoginPage;
-  //rootPage: any = CreateEventPage;
 
   private user: firebase.User;
   private userRole: string;
@@ -41,6 +41,7 @@ export class MyApp {
   ) {
     this.initializeApp();
     this.userAuth();
+    this.checkUserRole();
   }
 
   userAuth(){
@@ -50,7 +51,17 @@ export class MyApp {
         return;
       }
       this.user = user;
-      this.userRole = localStorage.getItem('userRole').toUpperCase();
+    });
+  }
+
+  checkUserRole() {
+    console.log("checkUserRole");
+    Observable.interval(1000).subscribe(() => {
+      if(!sessionStorage.getItem('userRole')){
+        this.userRole = "NONE";
+        return;
+      }
+      this.userRole = sessionStorage.getItem('userRole').toUpperCase();
     });
   }
 
@@ -91,6 +102,8 @@ export class MyApp {
       this.restApiProvider.logout()
       .then(result => {
         console.log("Logout from api");
+        //clear session
+        sessionStorage.clear();
         this.navCtrl.setRoot(LoginPage);
       })
       .catch(error => console.log("Error logout from api"));
