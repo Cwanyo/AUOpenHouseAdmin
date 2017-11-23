@@ -7,6 +7,7 @@ import * as firebase from 'firebase/app';
 import { HomePage } from './../home/home';
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
+import { Subscription } from 'rxjs/Subscription';
 /**
  * Generated class for the LoginPage page.
  *
@@ -22,6 +23,8 @@ export class LoginPage {
 
   private loader: any;
 
+  private subAuth: Subscription;
+
   private user: firebase.User;
 
   constructor(
@@ -34,23 +37,31 @@ export class LoginPage {
     private alertCtrl: AlertController,
     public loadingCtrl: LoadingController
   ) {
-    //TODO - disable menu bar on login page
-    this.menu.enable(false);
     this.userAuth();
   }
 
+  ngOnInit(){
+    //TODO - disable menu bar on login page
+    this.menu.enable(false);
+  }
+
+  ngOnDestroy(){
+    console.log("bye beeeee");
+    this.subAuth.unsubscribe();
+  }
+
   userAuth(){
-    this.afAuth.authState.subscribe(user => {
+    this.subAuth = this.afAuth.authState.subscribe(user => {
       if (!user) {
         this.user = null;
         return;
       }
       this.user = user;
-      this.summitBackend();
+      this.checkBackend();
     });
   }
 
-  summitBackend(){
+  checkBackend(){
     //show loding
     this.presentLoading();
     //TODO - summit to backend /login
