@@ -95,26 +95,18 @@ export class AdminAccountManagementPage {
       },{
         text: "Agree",
         handler: () => {
-          this.removeAuthority(aid,-1);
+          this.removeAuthority(aid);
         }
       }]
     });
     confirm.present();
   }
 
-  removeAuthority(aid: string, code: number){
-    // -1 = ban
-    // 0 = waiting
-    // 1 = approved
-    var authority = {
-      AID: aid,
-      Accout_Approval: code
-    }
-
+  removeAuthority(aid: string){
     this.presentLoading();
-    this.restApiProvider.editAuthority(authority)
+    this.restApiProvider.deleteAuthority(aid)
     .then(result => {
-      console.log("edit authority success");
+      console.log("delete authority success");
       this.loader.dismiss();
       this.getListOfAuthorities();
       var jsonData: any = result;
@@ -124,7 +116,7 @@ export class AdminAccountManagementPage {
     })
     .catch(error =>{
       this.loader.dismiss();
-      console.log("ERROR API : editAuthority",error);
+      console.log("ERROR API : deleteAuthority",error);
       if(error.status == 0){
         //show error message
         this.presentAlert("Cannot connect to server");
