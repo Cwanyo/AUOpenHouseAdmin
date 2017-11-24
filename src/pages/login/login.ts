@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, MenuController, Platform, AlertController, LoadingController   } from 'ionic-angular';
+import { Loading } from 'ionic-angular/components/loading/loading';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 
 import { HomePage } from './../home/home';
+
+import { RequestAccountPage } from '../request-account/request-account';
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 import { Subscription } from 'rxjs/Subscription';
@@ -21,7 +24,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class LoginPage {
 
-  private loader: any;
+  private loader: Loading;
 
   private subAuth: Subscription;
 
@@ -46,7 +49,7 @@ export class LoginPage {
   }
 
   ngOnDestroy(){
-    console.log("bye beeeee");
+    console.log("ngOnDestroy login")
     this.subAuth.unsubscribe();
   }
 
@@ -119,6 +122,13 @@ export class LoginPage {
       dismissOnPageChange: true
     });
     this.loader.present();
+  }
+
+  requestAccount(params){
+    if (!params) params = {};
+    console.log("requestAccount")
+    this.subAuth.unsubscribe();
+    this.navCtrl.push(RequestAccountPage, {"parentPage": this});
   }
 
   login(provider){

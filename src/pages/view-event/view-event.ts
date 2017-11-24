@@ -1,5 +1,6 @@
 import { EditEventPage } from './../edit-event/edit-event';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { Loading } from 'ionic-angular/components/loading/loading';
 
 import { Component } from '@angular/core';
 
@@ -23,7 +24,7 @@ export class ViewEventPage {
 
   public event: Event;
 
-  private loader: any;
+  private loader: Loading;
 
   public eventForm: FormGroup;
 
@@ -150,8 +151,7 @@ export class ViewEventPage {
 
   presentLoading() {
     this.loader = this.loadingCtrl.create({
-      content: "Please wait...",
-      dismissOnPageChange: true
+      content: "Please wait..."
     });
     this.loader.present();
   }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { Loading } from 'ionic-angular/components/loading/loading';
 
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Event } from './../../interface/event';
@@ -18,7 +19,7 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
 })
 export class CreateEventPage {
 
-  private loader: any;
+  private loader: Loading;
 
   public eventForm: FormGroup;
 
@@ -186,8 +187,7 @@ export class CreateEventPage {
 
   presentLoading() {
     this.loader = this.loadingCtrl.create({
-      content: "Please wait...",
-      dismissOnPageChange: true
+      content: "Please wait..."
     });
     this.loader.present();
   }
