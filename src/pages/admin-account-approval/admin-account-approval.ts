@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular'
 
-import { CreateEventPage } from './../create-event/create-event';
-import { EditEventPage } from './../edit-event/edit-event';
-import { ViewEventPage } from './../view-event/view-event';
-
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
 /**
