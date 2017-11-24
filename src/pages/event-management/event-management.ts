@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular'
+import { Loading } from 'ionic-angular/components/loading/loading';
 
 import { CreateEventPage } from './../create-event/create-event';
 import { EditEventPage } from './../edit-event/edit-event';
@@ -22,7 +23,7 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
 })
 export class EventManagementPage {
 
-  private loader: any;
+  private loader: Loading;
 
   public events = [];
   public faculties = [];
@@ -57,13 +58,16 @@ export class EventManagementPage {
   }
 
   getListOfEvents(){
+    this.presentLoading();
     this.restApiProvider.getEvents(1)
     .then(result => {
+      this.loader.dismiss();
       this.rawListOfEvents = result;
       this.faculties = Object.keys(this.groupByFaculty(result));
       this.events = this.groupByFaculty(result);
     })
     .catch(error =>{
+      this.loader.dismiss();
       console.log("ERROR API : getEvents",error);
     })
   }
@@ -157,8 +161,7 @@ export class EventManagementPage {
 
   presentLoading() {
     this.loader = this.loadingCtrl.create({
-      content: "Please wait...",
-      dismissOnPageChange: true
+      content: "Please wait..."
     });
     this.loader.present();
   }

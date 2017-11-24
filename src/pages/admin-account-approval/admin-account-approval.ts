@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular'
+import { Loading } from 'ionic-angular/components/loading/loading';
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
@@ -16,7 +17,7 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
 })
 export class AdminAccountApprovalPage {
 
-  private loader: any;
+  private loader: Loading;
 
   public authorities = [];
   public faculties = [];
@@ -51,13 +52,16 @@ export class AdminAccountApprovalPage {
   }
 
   getListOfAuthorities(){
+    this.presentLoading();
     this.restApiProvider.getAuthorities(0)
     .then(result => {
+      this.loader.dismiss();
       this.rawListOfAuthorities = result;
       this.faculties = Object.keys(this.groupByFaculty(result));
       this.authorities = this.groupByFaculty(result);
     })
     .catch(error =>{
+      this.loader.dismiss();
       console.log("ERROR API : getAuthorities",error);
     })
   }
@@ -158,8 +162,7 @@ export class AdminAccountApprovalPage {
 
   presentLoading() {
     this.loader = this.loadingCtrl.create({
-      content: "Please wait...",
-      dismissOnPageChange: true
+      content: "Please wait..."
     });
     this.loader.present();
   }

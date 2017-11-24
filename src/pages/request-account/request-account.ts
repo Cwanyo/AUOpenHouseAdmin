@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, MenuController, Platform, AlertController, LoadingController   } from 'ionic-angular';
+import { Loading } from 'ionic-angular/components/loading/loading';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
@@ -19,7 +20,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class RequestAccountPage {
 
-  private loader: any;
+  private loader: Loading;
 
   private subAuth: Subscription;
   private user: firebase.User;
@@ -231,8 +232,7 @@ export class RequestAccountPage {
 
   presentLoading() {
     this.loader = this.loadingCtrl.create({
-      content: "Please wait...",
-      dismissOnPageChange: true
+      content: "Please wait..."
     });
     this.loader.present();
   }

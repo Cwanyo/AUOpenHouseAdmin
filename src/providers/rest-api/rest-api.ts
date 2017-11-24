@@ -14,8 +14,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class RestApiProvider {
 
-  public url = 'https://auopenhouse.herokuapp.com/api/authority';
-  //public url = 'http://localhost:3000/api/authority';
+  //public url = 'https://auopenhouse.herokuapp.com/api/authority';
+  public url = 'http://localhost:3000/api/authority';
 
   constructor(public http: HttpClient) {
     console.log('Hello RestApiProvider Provider');
@@ -164,8 +164,8 @@ export class RestApiProvider {
     });
   }
 
-  getAuthorities(approval: number){
-    let path = this.url+'/authority/'+approval;
+  getAuthorities(approvalStatus: number){
+    let path = this.url+'/authorities/'+approvalStatus;
     
     return new Promise((resolve, reject) => {
       this.http.get(path, {withCredentials: true})
@@ -178,10 +178,23 @@ export class RestApiProvider {
   }
 
   editAuthority(authority){
-    let path = this.url+'/authority';
+    let path = this.url+'/authorities';
     
     return new Promise((resolve, reject) => {
       this.http.patch(path, {authority: authority}, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  deleteAuthority(aid: string){
+    let path = this.url+'/authorities/'+aid;
+    
+    return new Promise((resolve, reject) => {
+      this.http.delete(path, {withCredentials: true})
       .subscribe(res => {
         resolve(res);
       }, (err) => {
