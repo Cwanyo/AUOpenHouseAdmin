@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular'
+
+import { CreateEventPage } from './../create-event/create-event';
+import { EditEventPage } from './../edit-event/edit-event';
+import { ViewEventPage } from './../view-event/view-event';
+
+import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
 /**
  * Generated class for the AdminAccountApprovalPage page.
@@ -14,11 +20,152 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class AdminAccountApprovalPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private loader: any;
+
+  public authorities = [];
+  public faculties = [];
+
+  public rawListOfAuthorities;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private restApiProvider: RestApiProvider,
+    private alertCtrl: AlertController,
+    public loadingCtrl: LoadingController
+  ) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AdminAccountApprovalPage');
+  ngOnInit(){
+    this.getListOfAuthorities();
+  }
+
+  doRefresh(refresher) {
+    this.restApiProvider.getAuthorities(0)
+    .then(result => {
+      this.rawListOfAuthorities = result;
+      this.faculties = Object.keys(this.groupByFaculty(result));
+      this.authorities = this.groupByFaculty(result);
+      refresher.complete();
+    })
+    .catch(error =>{
+      console.log("ERROR API : getAuthorities",error);
+      refresher.complete();
+    })
+  }
+
+  getListOfAuthorities(){
+    this.restApiProvider.getAuthorities(0)
+    .then(result => {
+      this.rawListOfAuthorities = result;
+      this.faculties = Object.keys(this.groupByFaculty(result));
+      this.authorities = this.groupByFaculty(result);
+    })
+    .catch(error =>{
+      console.log("ERROR API : getAuthorities",error);
+    })
+  }
+
+  groupByFaculty(facultyValues){
+    return facultyValues.reduce((groups, facultyed) => {
+      let key = "All";
+      if(facultyed.Faculty_Name){
+        key = facultyed.Faculty_Name;
+      }
+      if (groups[key]) {
+        groups[key].push(facultyed);
+      } else {
+        groups[key] = [facultyed];
+      }
+      return groups;
+    }, {});
+  }
+
+  authorityBan(aid: string){
+    console.log("authorityBan",aid);
+    let confirm = this.alertCtrl.create({
+      title: "Alert!",
+      message: "Are you sure that you want to ban this user?",
+      buttons: [{
+        text: "Disagree"
+      },{
+        text: "Agree",
+        handler: () => {
+          this.manageAuthority(aid,-1);
+        }
+      }]
+    });
+    confirm.present();
+  }
+
+  authorityApprove(aid: string){
+    console.log("authorityApprove",aid);
+    let confirm = this.alertCtrl.create({
+      title: "Alert!",
+      message: "Are you sure that you want to approve this user?",
+      buttons: [{
+        text: "Disagree"
+      },{
+        text: "Agree",
+        handler: () => {
+          this.manageAuthority(aid,1);
+        }
+      }]
+    });
+    confirm.present();
+  }
+
+  manageAuthority(aid: string, code: number){
+    // -1 = ban
+    // 0 = waiting
+    // 1 = approved
+    var authority = {
+      AID: aid,
+      Accout_Approval: code
+    }
+
+    this.presentLoading();
+    this.restApiProvider.editAuthority(authority)
+    .then(result => {
+      console.log("edit authority success");
+      this.loader.dismiss();
+      this.getListOfAuthorities();
+      var jsonData: any = result;
+      if(jsonData.isSuccess){
+        this.presentAlert(jsonData.message);
+      }
+    })
+    .catch(error =>{
+      this.loader.dismiss();
+      console.log("ERROR API : editAuthority",error);
+      if(error.status == 0){
+        //show error message
+        this.presentAlert("Cannot connect to server");
+      }else{
+        var jsonData = JSON.parse(error.error);
+        //show error message
+        this.presentAlert(jsonData.message);
+      }
+    });
+  }
+
+  presentAlert(message) {
+    let alert = this.alertCtrl.create({
+      title: 'Alert!',
+      subTitle: message,
+      buttons: [{
+        text: 'Ok'
+      }]
+    });
+    alert.present();
+  }
+
+  presentLoading() {
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait...",
+      dismissOnPageChange: true
+    });
+    this.loader.present();
   }
 
 }

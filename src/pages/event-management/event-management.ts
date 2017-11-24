@@ -137,7 +137,7 @@ export class EventManagementPage {
               //show error message
               this.presentAlert(jsonData.message);
             }
-          })
+          });
         }
       }]
     });

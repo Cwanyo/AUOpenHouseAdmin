@@ -86,8 +86,8 @@ export class RestApiProvider {
     });
   }
 
-  getEvents(){
-    let path = this.url+'/events';
+  getEvents(state: number){
+    let path = this.url+'/events/'+state;
     
     return new Promise((resolve, reject) => {
       this.http.get(path, {withCredentials: true})
@@ -156,6 +156,32 @@ export class RestApiProvider {
     
     return new Promise((resolve, reject) => {
       this.http.delete(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  getAuthorities(approval: number){
+    let path = this.url+'/authority/'+approval;
+    
+    return new Promise((resolve, reject) => {
+      this.http.get(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  editAuthority(authority){
+    let path = this.url+'/authority';
+    
+    return new Promise((resolve, reject) => {
+      this.http.patch(path, {authority: authority}, {withCredentials: true})
       .subscribe(res => {
         resolve(res);
       }, (err) => {
