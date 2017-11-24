@@ -43,7 +43,7 @@ export class EventManagementPage {
   }
 
   doRefresh(refresher) {
-    this.restApiProvider.getEvents()
+    this.restApiProvider.getEvents(1)
     .then(result => {
       this.rawListOfEvents = result;
       this.faculties = Object.keys(this.groupByFaculty(result));
@@ -57,12 +57,11 @@ export class EventManagementPage {
   }
 
   getListOfEvents(){
-    this.restApiProvider.getEvents()
+    this.restApiProvider.getEvents(1)
     .then(result => {
       this.rawListOfEvents = result;
       this.faculties = Object.keys(this.groupByFaculty(result));
       this.events = this.groupByFaculty(result);
-      console.log(this.events);
     })
     .catch(error =>{
       console.log("ERROR API : getEvents",error);
