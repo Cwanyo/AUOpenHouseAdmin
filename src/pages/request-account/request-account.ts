@@ -91,6 +91,7 @@ export class RequestAccountPage {
     let confirm = this.alertCtrl.create({
       title: "Alert!",
       message: "Are you sure that you want to request for this account?",
+      enableBackdropDismiss: false,
       buttons: [{
         text: "Disagree"
       },{
@@ -223,6 +224,7 @@ export class RequestAccountPage {
     let alert = this.alertCtrl.create({
       title: 'Alert!',
       subTitle: message,
+      enableBackdropDismiss: false,
       buttons: [{
         text: 'Ok'
       }]

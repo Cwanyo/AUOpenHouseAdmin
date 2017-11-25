@@ -136,6 +136,7 @@ export class EditEventPage {
     let confirm = this.alertCtrl.create({
       title: "Alert!",
       message: "Are you sure that you want to edit this event?",
+      enableBackdropDismiss: false,
       buttons: [{
         text: "Disagree"
       },{
@@ -241,6 +242,7 @@ export class EditEventPage {
     let alert = this.alertCtrl.create({
       title: 'Alert!',
       subTitle: message,
+      enableBackdropDismiss: false,
       buttons: [{
         text: 'Ok'
       }]

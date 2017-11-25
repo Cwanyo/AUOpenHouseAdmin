@@ -90,6 +90,7 @@ export class AdminAccountManagementPage {
     let confirm = this.alertCtrl.create({
       title: "Alert!",
       message: "Are you sure that you want to ban this user?",
+      enableBackdropDismiss: false,
       buttons: [{
         text: "Disagree"
       },{
@@ -132,6 +133,7 @@ export class AdminAccountManagementPage {
     let alert = this.alertCtrl.create({
       title: 'Alert!',
       subTitle: message,
+      enableBackdropDismiss: false,
       buttons: [{
         text: 'Ok'
       }]

@@ -97,6 +97,7 @@ export class CreateGamePage {
     let confirm = this.alertCtrl.create({
       title: "Alert!",
       message: "Are you sure that you want to create this game?",
+      enableBackdropDismiss: false,
       buttons: [{
         text: "Disagree"
       },{
@@ -186,6 +187,7 @@ export class CreateGamePage {
     let alert = this.alertCtrl.create({
       title: 'Alert!',
       subTitle: message,
+      enableBackdropDismiss: false,
       buttons: [{
         text: 'Ok'
       }]
