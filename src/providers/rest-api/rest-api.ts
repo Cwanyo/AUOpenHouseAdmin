@@ -203,6 +203,19 @@ export class RestApiProvider {
     });
   }
 
+  getGameQuestion(gid: number){
+    let path = this.url+'/games/'+gid+'/questions';
+
+    return new Promise((resolve, reject) => {
+      this.http.get(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
   getAuthorities(approvalStatus: number){
     let path = this.url+'/authorities/'+approvalStatus;
     
