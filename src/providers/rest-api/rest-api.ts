@@ -14,8 +14,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class RestApiProvider {
 
-  public url = 'https://auopenhouse.herokuapp.com/api/authority';
-  //public url = 'http://localhost:3000/api/authority';
+  //public url = 'https://auopenhouse.herokuapp.com/api/authority';
+  public url = 'http://localhost:3000/api/authority';
 
   constructor(public http: HttpClient) {
     console.log('Hello RestApiProvider Provider');
@@ -169,6 +169,19 @@ export class RestApiProvider {
     
     return new Promise((resolve, reject) => {
       this.http.get(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  addGame(game){
+    let path = this.url+'/games';
+
+    return new Promise((resolve, reject) => {
+      this.http.post(path, {game: game}, {withCredentials: true})
       .subscribe(res => {
         resolve(res);
       }, (err) => {

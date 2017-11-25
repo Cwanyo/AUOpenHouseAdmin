@@ -2,6 +2,7 @@ export interface Game {
     GID: string;
     Name: string;
     Info: string;
+    Image: string;
     Time_Start: string;
     Time_End: string;
     State: string;
