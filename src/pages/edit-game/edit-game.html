@@ -82,7 +82,14 @@
                             </div>
                         </div>
 
-                        <ion-item>
+                        <ion-item *ngIf="gameQuestion.get('QID')">
+                            <ion-label>Right Choice</ion-label>
+                            <ion-select formControlName="Right_Choice" formArrayName="Answer_Choice">
+                                <ion-option *ngFor="let answerChoice of gameQuestion.controls.Answer_Choice.controls; let j=index" [formGroupName]="j" value="{{answerChoice.get('CID').value}}">{{j + 1}}</ion-option>
+                            </ion-select>
+                        </ion-item>
+
+                        <ion-item *ngIf="gameQuestion.get('QID')==null">
                             <ion-label>Right Choice</ion-label>
                             <ion-select formControlName="Right_Choice">
                                 <ion-option value="1">1</ion-option>

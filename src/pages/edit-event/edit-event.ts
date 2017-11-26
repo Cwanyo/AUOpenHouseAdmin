@@ -163,8 +163,8 @@ export class EditEventPage {
           }
           //--
           this.presentLoading();
-          //delete event if exist
-          this.deleteEvent(Number(event.EID));
+          //delete event time if exist in bin
+          this.deleteTime(Number(event.EID));
           //edit event
           this.editEvent(event);
         }
@@ -174,11 +174,11 @@ export class EditEventPage {
     
   }
 
-  deleteEvent(eid: number){
+  deleteTime(eid: number){
     this.deleteEventTime.forEach(tid => {
       this.restApiProvider.deleteEventTime(eid, tid)
       .then(result => {
-        console.log("delete event success");
+        console.log("delete event time success");
       })
       .catch(error =>{
         console.log("ERROR API : deleteEventTime",error);
