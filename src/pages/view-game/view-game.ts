@@ -153,6 +153,7 @@ export class ViewGamePage {
         
         gameControl.push(gq);
       });
+      gameControl.disable();
     })
     .catch(error =>{
       console.log("ERROR API : getGameQuestion",error);
@@ -170,6 +171,7 @@ export class ViewGamePage {
           Choice: [c.Choice.toString(), [Validators.required]],
         }));
       });
+      choiceControl.disable();
     })
     .catch(error =>{
       console.log("ERROR API : getAnswerChoice",error);

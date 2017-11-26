@@ -137,13 +137,14 @@ export class ViewEventPage {
     this.restApiProvider.getEventTime(Number(this.event.EID))
     .then(result => {
       let json: any = result;
+      const control = <FormArray>this.eventForm.controls["Event_Time"];
       json.forEach(t => {
-        const control = <FormArray>this.eventForm.controls["Event_Time"];
         control.push(this.formBuilder.group({
           TID: t.TID,
           Time_Start: [this.convertTime(t.Time_Start), [Validators.required]],
           Time_End: [this.convertTime(t.Time_End), [Validators.required]]
         }));
+        control.disable();
       });
     })
     .catch(error =>{
