@@ -45,11 +45,12 @@ export class ViewEventPage {
     private alertCtrl: AlertController,
     public loadingCtrl: LoadingController
   ) {
-    this.event = navParams.get("event");
-    console.log("Event",this.event);
   }
 
   ngOnInit(){
+    this.event = this.navParams.get("event");
+    console.log("Event",this.event);
+
     this.getListOfFaculties();
 
     let d = new Date();

@@ -54,13 +54,12 @@ export class EditEventPage {
     private alertCtrl: AlertController,
     public loadingCtrl: LoadingController
   ) {
-    this.event = navParams.get("event");
-    console.log("Event",this.event);
   }
 
   ngOnInit(){
     this.event = this.navParams.get("event");
     console.log("Event",this.event);
+    
     this.showMap();
     this.getListOfFaculties();
 

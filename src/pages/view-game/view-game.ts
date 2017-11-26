@@ -45,11 +45,12 @@ export class ViewGamePage {
     private alertCtrl: AlertController,
     public loadingCtrl: LoadingController
   ) {
-    this.game = navParams.get("game");
-    console.log("Game",this.game);
   }
 
   ngOnInit(){
+    this.game = this.navParams.get("game");
+    console.log("Game",this.game);
+
     this.getListOfFaculties();
 
     let d = new Date();
