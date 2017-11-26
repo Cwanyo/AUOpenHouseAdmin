@@ -8,11 +8,115 @@
 
     <ion-navbar>
         <ion-title>View Game</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="gameEdit()">
+                Edit
+            </button>
+        </ion-buttons>
     </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
+    <form [formGroup]="gameForm" novalidate>
+        <ion-item>
+            <ion-label floating>Title</ion-label>
+            <ion-input type="text" formControlName="Name" disabled="true"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Info</ion-label>
+            <ion-textarea formControlName="Info" disabled="true"></ion-textarea>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Faculty</ion-label>
+            <ion-select formControlName="FID" (ionChange)="hintMajors(gameForm.get('FID').value)" disabled="true">
+                <ion-option value="-1">All</ion-option>
+                <ion-option *ngFor="let f of listFaculties " value="{{f.FID}}">{{f.Name}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Major</ion-label>
+            <ion-select formControlName="MID" disabled="true">
+                <ion-option value="-1">All</ion-option>
+                <ion-option *ngFor="let m of listMajors" value="{{m.MID}}">{{m.Name}}</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-card>
+            <ion-card-header text-center>Game Time</ion-card-header>
+            <ion-card-content>
+                <ion-item>
+                    <ion-label>Start</ion-label>
+                    <ion-datetime formControlName="Time_Start" displayFormat="YYYY-MM-DD HH:mm" min={{minSelectabledate}} max={{maxSelectabledate}} disabled="true"></ion-datetime>
+                </ion-item>
+                <ion-item *ngIf="gameForm.get('Time_Start').value">
+                    <ion-label>End</ion-label>
+                    <ion-datetime formControlName="Time_End" displayFormat="YYYY-MM-DD HH:mm" min="{{gameForm.get('Time_Start').value}}" max={{maxSelectabledate}} disabled="true"></ion-datetime>
+                </ion-item>
+            </ion-card-content>
+        </ion-card>
+
+        <div formArrayName="Game_Question">
+
+            <div *ngFor="let gameQuestion of gameForm.controls.Game_Question.controls; let i=index">
+
+                <ion-card>
+                    <ion-card-header text-center>Question {{i + 1}}</ion-card-header>
+
+                    <ion-card-content [formGroupName]="i">
+                        <ion-item>
+                            <ion-label stacked>Question</ion-label>
+                            <ion-textarea formControlName="Question" disabled="true"></ion-textarea>
+                        </ion-item>
+
+                        <ion-label text-center>Choices</ion-label>
+                        <div formArrayName="Answer_Choice">
+                            <div *ngFor="let answerChoice of gameQuestion.controls.Answer_Choice.controls; let j=index">
+                                <div [formGroupName]="j">
+
+                                    <ion-item>
+                                        <ion-label>{{j + 1}}</ion-label>
+                                        <ion-textarea formControlName="Choice" disabled="true"></ion-textarea>
+                                    </ion-item>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <ion-item *ngIf="gameQuestion.get('QID')">
+                            <ion-label>Right Choice</ion-label>
+                            <ion-select formControlName="Right_Choice" formArrayName="Answer_Choice" disabled="true">
+                                <ion-option *ngFor="let answerChoice of gameQuestion.controls.Answer_Choice.controls; let j=index" [formGroupName]="j" value="{{answerChoice.get('CID').value}}">{{j + 1}}</ion-option>
+                            </ion-select>
+                        </ion-item>
+
+                        <ion-item *ngIf="gameQuestion.get('QID')==null">
+                            <ion-label>Right Choice</ion-label>
+                            <ion-select formControlName="Right_Choice" disabled="true">
+                                <ion-option value="1">1</ion-option>
+                                <ion-option value="2">2</ion-option>
+                                <ion-option value="3">3</ion-option>
+                                <ion-option value="4">4</ion-option>
+                            </ion-select>
+                        </ion-item>
+
+                    </ion-card-content>
+                </ion-card>
+
+            </div>
+
+        </div>
+
+    </form>
+
+    <!--
+    <div>
+        <div>gameForm details:-</div>
+        <pre>Is gameForm valid?: <br>{{gameForm.valid | json}}</pre>
+        <pre>form value: <br>{{gameForm.value | json}}</pre>
+    </div>
+    -->
 
 </ion-content>
