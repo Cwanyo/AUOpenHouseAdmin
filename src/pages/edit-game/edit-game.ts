@@ -98,6 +98,11 @@ export class EditGamePage {
     }
   }
 
+  removeLocation(){
+    this.gameMapMarker.setMap(null);
+    this.gameMapMarker = null;
+  }
+
   initGame(){
     //Change NULL to empty 
     if(this.game.Image == null){

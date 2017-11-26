@@ -97,6 +97,11 @@ export class EditEventPage {
       });
     }
   }
+
+  removeLocation(){
+    this.eventMapMarker.setMap(null);
+    this.eventMapMarker = null;
+  }
   
   initEvent(){
     //Change NULL to empty 
