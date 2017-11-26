@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Loading } from 'ionic-angular/components/loading/loading';
 
@@ -8,6 +8,7 @@ import { Event } from './../../interface/event';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
 import firebase from 'firebase';
+import {} from '@types/googlemaps';
 
 /**
  * Generated class for the CreateEventPage page.
@@ -21,6 +22,10 @@ import firebase from 'firebase';
   templateUrl: 'create-event.html',
 })
 export class CreateEventPage {
+
+  @ViewChild("map") mapRef: ElementRef;
+  private map: google.maps.Map;
+  private eventMapMarker: google.maps.Marker;
 
   private loader: Loading;
 
@@ -52,6 +57,7 @@ export class CreateEventPage {
   //TODO - add location
 
   ngOnInit(){
+    this.showMap();
     this.getListOfFaculties();
 
     let d = new Date();
@@ -59,6 +65,34 @@ export class CreateEventPage {
     this.maxSelectabledate = d.getFullYear()+1;
 
     this.initEvent();
+  }
+
+  showMap(){
+    //set default map location
+    const location = new google.maps.LatLng(13.612111, 100.837667);
+    //set map options
+    const options = {
+      center: location,
+      zoom: 17
+    };
+
+    this.map = new google.maps.Map(this.mapRef.nativeElement,options);
+
+    google.maps.event.addListener(this.map, 'click', event => {
+      this.placeMarker(event.latLng, this.map);
+    });
+  }
+
+  placeMarker(location, map){
+    if(this.eventMapMarker){
+      this.eventMapMarker.setPosition(location);
+    }else{
+      this.eventMapMarker = new google.maps.Marker({
+        position: location,
+        draggable: true,
+        map: map
+      });
+    }
   }
 
   initEvent(){
@@ -101,10 +135,12 @@ export class CreateEventPage {
     if(event.Image == ""){
       event.Image = null;
     }
-    if(event.Location_Latitude == ""){
+    //get location from google map
+    if(this.eventMapMarker){
+      event.Location_Latitude = this.eventMapMarker.getPosition().lat().toString();
+      event.Location_Longitude = this.eventMapMarker.getPosition().lng().toString();
+    }else{
       event.Location_Latitude = null;
-    }
-    if(event.Location_Longitude == ""){
       event.Location_Longitude = null;
     }
     if(event.FID == "-1"){

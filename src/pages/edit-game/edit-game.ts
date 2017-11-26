@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Loading } from 'ionic-angular/components/loading/loading';
 
@@ -8,6 +8,8 @@ import { Game } from './../../interface/Game';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
 import firebase from 'firebase';
+import {} from '@types/googlemaps';
+
 /**
  * Generated class for the EditGamePage page.
  *
@@ -20,6 +22,10 @@ import firebase from 'firebase';
   templateUrl: 'edit-game.html',
 })
 export class EditGamePage {
+
+  @ViewChild("map") mapRef: ElementRef;
+  private map: google.maps.Map;
+  private gameMapMarker: google.maps.Marker;
 
   public game: Game;
   public deleteGameQuestion = [];
@@ -53,6 +59,7 @@ export class EditGamePage {
   }
 
   ngOnInit(){
+    this.showMap();
     this.getListOfFaculties();
 
     let d = new Date();
@@ -62,6 +69,34 @@ export class EditGamePage {
     this.initGame();
   }
 
+  showMap(){
+    //set default map location
+    const location = new google.maps.LatLng(13.612111, 100.837667);
+    //set map options
+    const options = {
+      center: location,
+      zoom: 17
+    };
+
+    this.map = new google.maps.Map(this.mapRef.nativeElement,options);
+
+    google.maps.event.addListener(this.map, 'click', event => {
+      this.placeMarker(event.latLng, this.map);
+    });
+  }
+
+  placeMarker(location, map){
+    if(this.gameMapMarker){
+      this.gameMapMarker.setPosition(location);
+    }else{
+      this.gameMapMarker = new google.maps.Marker({
+        position: location,
+        draggable: true,
+        map: map
+      });
+    }
+  }
+
   initGame(){
     //Change NULL to empty 
     if(this.game.Image == null){
@@ -69,11 +104,12 @@ export class EditGamePage {
     }else{
       this.Image = this.game.Image;
     }
-    if(this.game.Location_Latitude == null){
+    if(this.game.Location_Latitude == null && this.game.Location_Longitude == null){
       this.game.Location_Latitude = "";
-    }
-    if(this.game.Location_Longitude == null){
       this.game.Location_Longitude = "";
+    }else{
+      this.placeMarker(new google.maps.LatLng(Number(this.game.Location_Latitude),Number(this.game.Location_Longitude)),this.map);
+      this.map.setCenter(this.gameMapMarker.getPosition());
     }
     if(this.game.FID == null){
       this.game.FID = "-1";
@@ -196,10 +232,11 @@ export class EditGamePage {
           if(game.Image == ""){
             game.Image = null;
           }
-          if(game.Location_Latitude == ""){
+          if(this.gameMapMarker){
+            game.Location_Latitude = this.gameMapMarker.getPosition().lat().toString();
+            game.Location_Longitude = this.gameMapMarker.getPosition().lng().toString();
+          }else{
             game.Location_Latitude = null;
-          }
-          if(game.Location_Longitude == ""){
             game.Location_Longitude = null;
           }
           if(game.FID == "-1"){
