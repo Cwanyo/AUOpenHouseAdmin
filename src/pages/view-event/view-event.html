@@ -44,6 +44,10 @@
             </ion-select>
         </ion-item>
 
+        <div style="text-align: center;padding: 10px;">
+            <img *ngIf="Image" [src]="Image" style="display:block;width:100%;height:100%;margin-left:auto;margin-right:auto;" />
+        </div>
+
         <div formArrayName="Event_Time">
 
             <div *ngFor="let eventTime of eventForm.controls.Event_Time.controls; let i=index">

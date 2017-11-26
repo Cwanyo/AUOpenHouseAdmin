@@ -35,6 +35,8 @@ export class ViewEventPage {
   public listFaculties;
   public listMajors;
 
+  public Image: string;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -62,6 +64,8 @@ export class ViewEventPage {
     //Change NULL to empty 
     if(this.event.Image == null){
       this.event.Image = "";
+    }else{
+      this.Image = this.event.Image;
     }
     if(this.event.Location_Latitude == null){
       this.event.Location_Latitude = "";

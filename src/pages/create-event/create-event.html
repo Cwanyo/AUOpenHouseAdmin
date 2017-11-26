@@ -39,6 +39,21 @@
             </ion-select>
         </ion-item>
 
+        <div style="text-align: center;padding: 10px;">
+            <input id="uploadImage" type="file" accept="image/jpeg" capture style="display: none;" (change)="uploadImage($event)">
+            <div *ngIf="Image">
+                <img *ngIf="Image" [src]="Image" style="display:block;width:100%;height:100%;margin-left:auto;margin-right:auto;" />
+                <button ion-button full color="danger" (click)="removeImage()">
+                    <ion-icon name="trash"></ion-icon>&nbsp;Remove Image
+                </button>
+            </div>
+            <div *ngIf="!Image">
+                <button ion-button full color="light" onclick="document.getElementById('uploadImage').click();">
+                    <ion-icon name="camera"></ion-icon>&nbsp;Upload Image
+                </button>
+            </div>
+        </div>
+
         <div formArrayName="Event_Time">
 
             <div *ngFor="let eventTime of eventForm.controls.Event_Time.controls; let i=index">

@@ -35,6 +35,8 @@ export class ViewGamePage {
   public listFaculties;
   public listMajors;
 
+  public Image: string;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -62,6 +64,8 @@ export class ViewGamePage {
     //Change NULL to empty 
     if(this.game.Image == null){
       this.game.Image = "";
+    }else{
+      this.Image = this.game.Image;
     }
     if(this.game.Location_Latitude == null){
       this.game.Location_Latitude = "";
