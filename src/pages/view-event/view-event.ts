@@ -154,6 +154,18 @@ export class ViewEventPage {
     this.navCtrl.push(EditEventPage, {event: event, "parentPage":  this.navParams.get("parentPage")});
   }
 
+  presentAlert(message) {
+    let alert = this.alertCtrl.create({
+      title: 'Alert!',
+      subTitle: message,
+      enableBackdropDismiss: false,
+      buttons: [{
+        text: 'Ok'
+      }]
+    });
+    alert.present();
+  }
+
   presentLoading() {
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
