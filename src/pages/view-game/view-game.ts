@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Loading } from 'ionic-angular/components/loading/loading';
 
@@ -21,6 +21,10 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
   templateUrl: 'view-game.html',
 })
 export class ViewGamePage {
+
+  @ViewChild("map") mapRef: ElementRef;
+  private map: google.maps.Map;
+  private eventMapMarker: google.maps.Marker;
 
   public game: Game;
   public deleteGameQuestion = [];
@@ -51,6 +55,7 @@ export class ViewGamePage {
     this.game = this.navParams.get("game");
     console.log("Game",this.game);
 
+    this.showMap();
     this.getListOfFaculties();
 
     let d = new Date();
@@ -61,6 +66,29 @@ export class ViewGamePage {
     this.gameForm.disable();
   }
 
+  showMap(){
+    //set default map location
+    const location = new google.maps.LatLng(13.612111, 100.837667);
+    //set map options
+    const options = {
+      center: location,
+      zoom: 17
+    };
+
+    this.map = new google.maps.Map(this.mapRef.nativeElement,options);
+  }
+
+  placeMarker(location, map){
+    if(this.eventMapMarker){
+      this.eventMapMarker.setPosition(location);
+    }else{
+      this.eventMapMarker = new google.maps.Marker({
+        position: location,
+        map: map
+      });
+    }
+  }
+
   initGame(){
     //Change NULL to empty 
     if(this.game.Image == null){
@@ -68,10 +96,11 @@ export class ViewGamePage {
     }else{
       this.Image = this.game.Image;
     }
-    if(this.game.Location_Latitude == null){
+    if(this.game.Location_Latitude&&this.game.Location_Longitude){
+      this.placeMarker(new google.maps.LatLng(Number(this.game.Location_Latitude),Number(this.game.Location_Longitude)),this.map);
+      this.map.setCenter(this.eventMapMarker.getPosition());
+    }else{
       this.game.Location_Latitude = "";
-    }
-    if(this.game.Location_Longitude == null){
       this.game.Location_Longitude = "";
     }
     if(this.game.FID == null){

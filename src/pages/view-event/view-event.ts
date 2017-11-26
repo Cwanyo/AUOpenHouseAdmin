@@ -1,7 +1,6 @@
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Loading } from 'ionic-angular/components/loading/loading';
-
-import { Component } from '@angular/core';
 
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Event } from './../../interface/event';
@@ -22,6 +21,10 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
   templateUrl: 'view-event.html',
 })
 export class ViewEventPage {
+
+  @ViewChild("map") mapRef: ElementRef;
+  private map: google.maps.Map;
+  private eventMapMarker: google.maps.Marker;
 
   public event: Event;
 
@@ -51,6 +54,7 @@ export class ViewEventPage {
     this.event = this.navParams.get("event");
     console.log("Event",this.event);
 
+    this.showMap();
     this.getListOfFaculties();
 
     let d = new Date();
@@ -61,6 +65,29 @@ export class ViewEventPage {
     this.eventForm.disable();
   }
 
+  showMap(){
+    //set default map location
+    const location = new google.maps.LatLng(13.612111, 100.837667);
+    //set map options
+    const options = {
+      center: location,
+      zoom: 17
+    };
+
+    this.map = new google.maps.Map(this.mapRef.nativeElement,options);
+  }
+
+  placeMarker(location, map){
+    if(this.eventMapMarker){
+      this.eventMapMarker.setPosition(location);
+    }else{
+      this.eventMapMarker = new google.maps.Marker({
+        position: location,
+        map: map
+      });
+    }
+  }
+
   initEvent(){
     //Change NULL to empty 
     if(this.event.Image == null){
@@ -68,10 +95,11 @@ export class ViewEventPage {
     }else{
       this.Image = this.event.Image;
     }
-    if(this.event.Location_Latitude == null){
+    if(this.event.Location_Latitude&&this.event.Location_Longitude){
+      this.placeMarker(new google.maps.LatLng(Number(this.event.Location_Latitude),Number(this.event.Location_Longitude)),this.map);
+      this.map.setCenter(this.eventMapMarker.getPosition());
+    }else{
       this.event.Location_Latitude = "";
-    }
-    if(this.event.Location_Longitude == null){
       this.event.Location_Longitude = "";
     }
     if(this.event.FID == null){

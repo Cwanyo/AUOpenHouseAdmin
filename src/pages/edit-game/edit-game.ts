@@ -105,12 +105,12 @@ export class EditGamePage {
     }else{
       this.Image = this.game.Image;
     }
-    if(this.game.Location_Latitude == null && this.game.Location_Longitude == null){
-      this.game.Location_Latitude = "";
-      this.game.Location_Longitude = "";
-    }else{
+    if(this.game.Location_Latitude&&this.game.Location_Longitude){
       this.placeMarker(new google.maps.LatLng(Number(this.game.Location_Latitude),Number(this.game.Location_Longitude)),this.map);
       this.map.setCenter(this.gameMapMarker.getPosition());
+    }else{
+      this.game.Location_Latitude = "";
+      this.game.Location_Longitude = "";
     }
     if(this.game.FID == null){
       this.game.FID = "-1";

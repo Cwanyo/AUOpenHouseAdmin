@@ -105,12 +105,12 @@ export class EditEventPage {
     }else{
       this.Image = this.event.Image;
     }
-    if(this.event.Location_Latitude == null && this.event.Location_Longitude == null){
-      this.event.Location_Latitude = "";
-      this.event.Location_Longitude = "";
-    }else{
+    if(this.event.Location_Latitude&&this.event.Location_Longitude){
       this.placeMarker(new google.maps.LatLng(Number(this.event.Location_Latitude),Number(this.event.Location_Longitude)),this.map);
       this.map.setCenter(this.eventMapMarker.getPosition());
+    }else{
+      this.event.Location_Latitude = "";
+      this.event.Location_Longitude = "";
     }
     if(this.event.FID == null){
       this.event.FID = "-1";
