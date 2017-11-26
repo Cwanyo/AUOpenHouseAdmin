@@ -7,6 +7,8 @@ import { Event } from './../../interface/event';
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
+import firebase from 'firebase';
+
 /**
  * Generated class for the EditEventPage page.
  *
@@ -32,6 +34,12 @@ export class EditEventPage {
 
   public listFaculties;
   public listMajors;
+
+  public storage = firebase.storage();
+  
+  public ImageOrientation: number;
+  public Image: string;
+  public gotImage: boolean = false;
 
   constructor(
     public navCtrl: NavController, 
@@ -59,6 +67,8 @@ export class EditEventPage {
     //Change NULL to empty 
     if(this.event.Image == null){
       this.event.Image = "";
+    }else{
+      this.Image = this.event.Image;
     }
     if(this.event.Location_Latitude == null){
       this.event.Location_Latitude = "";
@@ -236,6 +246,142 @@ export class EditEventPage {
     .catch(error =>{
       console.log("ERROR API : getMajorsInFaculty",error);
     })
+  }
+
+  resetImage(){
+    this.ImageOrientation = null;
+    this.Image = null;
+    this.gotImage = false;
+  }
+
+  removeImage(){
+    this.eventForm.patchValue({Image: ""})
+    this.resetImage();
+    console.log("remove image");
+  }
+
+  uploadImage(event){
+    //reset first
+    this.resetImage();
+
+    let pic = event.target.files[0];
+    if(pic == null || pic.type!="image/jpeg"){
+      console.log("image not in jpeg");
+      return;
+    }
+    //GET orientation
+    this.orientationReader(pic);
+    //RESET picture orientation
+    this.resetOrientationPhoto(pic);
+  }
+
+  orientationReader(picture){
+    var reader = new FileReader();
+    reader.onload = this._handleOrientationLoaded.bind(this);
+    reader.readAsArrayBuffer(picture);
+  }
+
+  _handleOrientationLoaded(readerEvt){
+    var view = new DataView(readerEvt.target.result);
+    if (view.getUint16(0, false) != 0xFFD8){
+      console.log("Error Picture not jped");
+      return -2;
+    }
+    var length = view.byteLength, offset = 2;
+    while (offset < length) {
+      var marker = view.getUint16(offset, false);
+      offset += 2;
+      if (marker == 0xFFE1) {
+        if (view.getUint32(offset += 2, false) != 0x45786966){
+          console.log("Error Picture not defined");
+          return -1;
+        } 
+        var little = view.getUint16(offset += 6, false) == 0x4949;
+        offset += view.getUint32(offset + 4, little);
+        var tags = view.getUint16(offset, little);
+        offset += 2;
+        for (var i = 0; i < tags; i++)
+          if (view.getUint16(offset + (i * 12), little) == 0x0112){
+            let orientation = view.getUint16(offset + (i * 12) + 8, little);
+            console.log("Picture orientation",orientation);
+            this.ImageOrientation = orientation;
+            return orientation;
+          }
+      }
+      else if ((marker & 0xFF00) != 0xFF00) break;
+      else offset += view.getUint16(offset, false);
+    }
+  }
+
+  resetOrientationPhoto(picture){
+    var img = new Image();
+    img.onload = this._handleResetOrientationPhotoLoaded.bind(this);
+    img.src = URL.createObjectURL(picture);
+  }
+
+  _handleResetOrientationPhotoLoaded(readerEvt){
+    var img = readerEvt.path[0];
+    var width = img.width,
+    height = img.height,
+    canvas = document.createElement('canvas'),
+    ctx = canvas.getContext("2d");
+
+     if (4 < this.ImageOrientation && this.ImageOrientation < 9) {
+      canvas.width = height;
+      canvas.height = width;
+    } else {
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    switch (this.ImageOrientation) {
+      case 2: ctx.transform(-1, 0, 0, 1, width, 0); break;
+      case 3: ctx.transform(-1, 0, 0, -1, width, height ); break;
+      case 4: ctx.transform(1, 0, 0, -1, 0, height ); break;
+      case 5: ctx.transform(0, 1, 1, 0, 0, 0); break;
+      case 6: ctx.transform(0, 1, -1, 0, height , 0); break;
+      case 7: ctx.transform(0, -1, -1, 0, height , width); break;
+      case 8: ctx.transform(0, -1, 1, 0, 0, width); break;
+      default: break;
+    }
+
+    ctx.drawImage(img, 0, 0);
+
+    //export to base64 jpeg and set image quality  25%
+    let imageData = canvas.toDataURL("image/jpeg",0.25);
+
+    this.Image = imageData;
+    console.log("Got Image");
+    this.gotImage = true;
+    this.uploadImageToFirestore();
+  }
+
+  uploadImageToFirestore(){
+    if(this.gotImage==false){
+      console.log("no image to upload");
+      return;
+    }
+    this.presentLoading();
+    let photoPath = "Images/Events/"+new Date().getTime()+".jpg";
+    const storageRef = this.storage.ref(photoPath);
+    storageRef.putString(this.Image, "data_url")
+    .then(() =>{
+      console.log("Uploaded image");
+    })
+    .then(() => {
+      //get image URL
+      const storageRef = this.storage.ref(photoPath);
+      storageRef.getDownloadURL()
+      .then(url =>{
+        this.eventForm.patchValue({Image: url})
+        console.log("Got image URL", url);
+        this.loader.dismiss();
+      });
+    })
+    .catch(error => {
+      this.loader.dismiss();
+      console.log("Error",error);
+    });
   }
 
   presentAlert(message) {
