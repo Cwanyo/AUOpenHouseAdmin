@@ -101,10 +101,10 @@ export class EditEventPage {
     this.restApiProvider.getEventTime(Number(this.event.EID))
     .then(result => {
       let json: any = result;
+      const control = <FormArray>this.eventForm.controls["Event_Time"];
       json.forEach(t => {
-        const control = <FormArray>this.eventForm.controls["Event_Time"];
         control.push(this.formBuilder.group({
-          TID: t.TID,
+          TID: t.TID.toString(),
           Time_Start: [this.convertTime(t.Time_Start), [Validators.required]],
           Time_End: [this.convertTime(t.Time_End), [Validators.required]]
         }));
@@ -136,6 +136,7 @@ export class EditEventPage {
     let confirm = this.alertCtrl.create({
       title: "Alert!",
       message: "Are you sure that you want to edit this event?",
+      enableBackdropDismiss: false,
       buttons: [{
         text: "Disagree"
       },{
@@ -162,8 +163,8 @@ export class EditEventPage {
           }
           //--
           this.presentLoading();
-          //delete event if exist
-          this.deleteEvent(Number(event.EID));
+          //delete event time if exist in bin
+          this.deleteTime(Number(event.EID));
           //edit event
           this.editEvent(event);
         }
@@ -173,11 +174,11 @@ export class EditEventPage {
     
   }
 
-  deleteEvent(eid: number){
+  deleteTime(eid: number){
     this.deleteEventTime.forEach(tid => {
       this.restApiProvider.deleteEventTime(eid, tid)
       .then(result => {
-        console.log("delete event success");
+        console.log("delete event time success");
       })
       .catch(error =>{
         console.log("ERROR API : deleteEventTime",error);
@@ -241,6 +242,7 @@ export class EditEventPage {
     let alert = this.alertCtrl.create({
       title: 'Alert!',
       subTitle: message,
+      enableBackdropDismiss: false,
       buttons: [{
         text: 'Ok'
       }]

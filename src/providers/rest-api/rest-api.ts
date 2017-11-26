@@ -164,6 +164,97 @@ export class RestApiProvider {
     });
   }
 
+  getGames(state: number){
+    let path = this.url+'/games/'+state;
+    
+    return new Promise((resolve, reject) => {
+      this.http.get(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  addGame(game){
+    let path = this.url+'/games';
+
+    return new Promise((resolve, reject) => {
+      this.http.post(path, {game: game}, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  editGame(game){
+    let path = this.url+'/games';
+
+    return new Promise((resolve, reject) => {
+      this.http.patch(path, {game: game}, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  deleteGame(gid: number){
+    let path = this.url+'/games/'+gid;
+
+    return new Promise((resolve, reject) => {
+      this.http.delete(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  deleteGameQuestion(gid: number, qid: number){
+    let path = this.url+'/games/'+gid+'/questions/'+qid;
+    
+    return new Promise((resolve, reject) => {
+      this.http.delete(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  getGameQuestion(gid: number){
+    let path = this.url+'/games/'+gid+'/questions';
+
+    return new Promise((resolve, reject) => {
+      this.http.get(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  getAnswerChoice(gid: number, qid: number){
+    let path = this.url+'/games/'+gid+'/questions/'+qid+'/choices';
+    
+    return new Promise((resolve, reject) => {
+      this.http.get(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
   getAuthorities(approvalStatus: number){
     let path = this.url+'/authorities/'+approvalStatus;
     

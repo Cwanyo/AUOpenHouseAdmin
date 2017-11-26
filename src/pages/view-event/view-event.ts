@@ -1,4 +1,3 @@
-import { EditEventPage } from './../edit-event/edit-event';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Loading } from 'ionic-angular/components/loading/loading';
 
@@ -6,6 +5,8 @@ import { Component } from '@angular/core';
 
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Event } from './../../interface/event';
+
+import { EditEventPage } from './../edit-event/edit-event';
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
@@ -142,8 +143,8 @@ export class ViewEventPage {
     })
   }
 
-  eventEdit(eid: number){
-    console.log("editEvent",eid);
+  eventEdit(){
+    console.log("editEvent");
     let event = this.event;
     
     this.navCtrl.push(EditEventPage, {event: event, "parentPage":  this.navParams.get("parentPage")});

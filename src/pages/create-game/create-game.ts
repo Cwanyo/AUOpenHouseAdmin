@@ -3,25 +3,26 @@ import { NavController, NavParams, AlertController, LoadingController } from 'io
 import { Loading } from 'ionic-angular/components/loading/loading';
 
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
-import { Event } from './../../interface/event';
+import { Game } from './../../interface/Game';
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
+
 /**
- * Generated class for the CreateEventPage page.
+ * Generated class for the CreateGamePage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
 @Component({
-  selector: 'page-create-event',
-  templateUrl: 'create-event.html',
+  selector: 'page-create-game',
+  templateUrl: 'create-game.html',
 })
-export class CreateEventPage {
+export class CreateGamePage {
 
   private loader: Loading;
-
-  public eventForm: FormGroup;
+  
+  public gameForm: FormGroup;
 
   public minSelectabledate;
   public maxSelectabledate;
@@ -38,10 +39,6 @@ export class CreateEventPage {
     public loadingCtrl: LoadingController
   ) {
   }
-  //TODO - validate time
-  //TODO - default timezone
-  //TODO - upload Image
-  //TODO - add location
 
   ngOnInit(){
     this.getListOfFaculties();
@@ -50,78 +47,106 @@ export class CreateEventPage {
     this.minSelectabledate = d.getFullYear();
     this.maxSelectabledate = d.getFullYear()+1;
 
-    this.initEvent();
+    this.initGame();
   }
 
-  initEvent(){
-    this.eventForm = this.formBuilder.group({
+  initGame(){
+    this.gameForm = this.formBuilder.group({
       Name: ["", [Validators.required]],
       Info: ["", [Validators.required]],
       Image: "",
+      Time_Start: ["", [Validators.required]],
+      Time_End: ["", [Validators.required]],
       Location_Latitude: "",
       Location_Longitude: "",
-      Event_Time: this.formBuilder.array([
-        this.initEventTime(),
+      Game_Question: this.formBuilder.array([
+        this.initGameQuestion(),
       ]),
       MID: ["-1", [Validators.required]],
       FID: ["-1", [Validators.required]]
     });
   }
 
-  initEventTime(){
+  initGameQuestion(){
     return this.formBuilder.group({
-      Time_Start: ["", [Validators.required]],
-      Time_End: ["", [Validators.required]]
+      Question: ["", [Validators.required]],
+      Answer_Choice: this.formBuilder.array([
+        this.initAnswerChoice(),this.initAnswerChoice(),this.initAnswerChoice(),this.initAnswerChoice(),
+      ]),
+      Right_Choice: ["", [Validators.required]]
     });
   }
 
-  addEventTime() {
-    const control = <FormArray>this.eventForm.controls["Event_Time"];
-    control.push(this.initEventTime());
+  initAnswerChoice(){
+    return this.formBuilder.group({
+      Choice: ["", [Validators.required]],
+    });
   }
 
-  removeEventTime(i: number) {
-    const control = <FormArray>this.eventForm.controls["Event_Time"];
+  addGameQuestion() {
+    const control = <FormArray>this.gameForm.controls["Game_Question"];
+    control.push(this.initGameQuestion());
+  }
+
+  removeGameQuestion(i: number) {
+    const control = <FormArray>this.gameForm.controls["Game_Question"];
     control.removeAt(i);
   }
 
-  addEvent(){
+  submitGame(){
+    let confirm = this.alertCtrl.create({
+      title: "Alert!",
+      message: "Are you sure that you want to create this game?",
+      enableBackdropDismiss: false,
+      buttons: [{
+        text: "Disagree"
+      },{
+        text: "Agree",
+        handler: () => {
+         this.addGame();
+        }
+      }]
+    });
+    confirm.present();
+  }
+
+  addGame(){
     //get form data
-    let event: Event = this.eventForm.value;
+    let game: Game = this.gameForm.value;
     
     //Change empty to NULL
-    if(event.Image == ""){
-      event.Image = null;
+    if(game.Image == ""){
+      game.Image = null;
     }
-    if(event.Location_Latitude == ""){
-      event.Location_Latitude = null;
+    if(game.Location_Latitude == ""){
+      game.Location_Latitude = null;
     }
-    if(event.Location_Longitude == ""){
-      event.Location_Longitude = null;
+    if(game.Location_Longitude == ""){
+      game.Location_Longitude = null;
     }
-    if(event.FID == "-1"){
-      event.FID = null;
+    if(game.FID == "-1"){
+      game.FID = null;
     }
-    if(event.MID == "-1"){
-      event.MID = null;
+    if(game.MID == "-1"){
+      game.MID = null;
     }
-    //--
+    //*
     this.presentLoading();
-    this.restApiProvider.addEvent(event)
+    this.restApiProvider.addGame(game)
     .then(result => {
       this.loader.dismiss();
-      console.log("add event success");
+      console.log("add game success");
       var jsonData: any = result;
       if(jsonData.isSuccess){
         this.presentAlert(jsonData.message);
-        //refresth list of event on the main event page
-        this.navParams.get("parentPage").getListOfEvents();
+        //refresth list of game on the main game page
+        this.navParams.get("parentPage").getListOfGames();
         this.navCtrl.pop();
       }
     })
     .catch(error =>{
       this.loader.dismiss();
-      console.log("ERROR API : addEvent",error);
+      console.log("ERROR API : addGame",error);
       if(error.status == 0){
         //show error message
         this.presentAlert("Cannot connect to server");
@@ -131,23 +156,6 @@ export class CreateEventPage {
         this.presentAlert(jsonData.message);
       }
     })
-  }
-
-  submitEvent(){
-    let confirm = this.alertCtrl.create({
-      title: "Alert!",
-      message: "Are you sure that you want to create this event?",
-      enableBackdropDismiss: false,
-      buttons: [{
-        text: "Disagree"
-      },{
-        text: "Agree",
-        handler: () => {
-         this.addEvent();
-        }
-      }]
-    });
-    confirm.present();
   }
 
   getListOfFaculties(){
@@ -161,7 +169,7 @@ export class CreateEventPage {
   }
 
   hintMajors(fid: number){
-    this.eventForm.patchValue({MID:"-1"});
+    this.gameForm.patchValue({MID:"-1"});
     if(fid == -1){
       this.listMajors = null;
       return;

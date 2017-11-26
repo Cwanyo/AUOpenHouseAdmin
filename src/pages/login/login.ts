@@ -106,6 +106,7 @@ export class LoginPage {
     let alert = this.alertCtrl.create({
       title: 'Alert!',
       subTitle: message,
+      enableBackdropDismiss: false,
       buttons: [{
         text: 'Logout',
         handler: () => {

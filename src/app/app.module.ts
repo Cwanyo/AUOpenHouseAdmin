@@ -26,6 +26,9 @@ import { ViewEventPage } from './../pages/view-event/view-event';
 
 //Game Pages
 import { GameManagementPage } from './../pages/game-management/game-management';
+import { CreateGamePage } from './../pages/create-game/create-game';
+import { EditGamePage } from './../pages/edit-game/edit-game';
+import { ViewGamePage } from './../pages/view-game/view-game';
 
 //--Pages for admin only--
 import { AdminAccountManagementPage } from '../pages/admin-account-management/admin-account-management';
@@ -52,6 +55,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     EditEventPage,
     ViewEventPage,
     GameManagementPage,
+    CreateGamePage,
+    EditGamePage,
+    ViewGamePage,
     AdminAccountManagementPage,
     AdminAccountApprovalPage
   ],
@@ -76,6 +82,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     EditEventPage,
     ViewEventPage,
     GameManagementPage,
+    CreateGamePage,
+    EditGamePage,
+    ViewGamePage,
     AdminAccountManagementPage,
     AdminAccountApprovalPage
   ],
