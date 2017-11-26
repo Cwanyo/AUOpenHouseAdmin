@@ -1,6 +1,6 @@
 {
-    "name": "AuOpenHouse",
-    "version": "0.0.2",
+    "name": "AuOpenHouseAdmin",
+    "version": "0.0.4",
     "author": "Cwan",
     "homepage": "https://github.com/Cwanyo/auopenhouseadmin",
     "private": true,
