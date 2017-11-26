@@ -21,31 +21,36 @@
 <ion-content padding>
 
     <form [formGroup]="eventForm" novalidate>
+
+        <div style="text-align: center;padding: 10px;">
+            <img *ngIf="Image" [src]="Image" style="display:block;width:100%;height:100%;margin-left:auto;margin-right:auto;" />
+        </div>
+
         <ion-item>
             <ion-label floating>Title</ion-label>
-            <ion-input type="text" formControlName="Name" disabled="true"></ion-input>
+            <ion-input type="text" formControlName="Name"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label floating>Info</ion-label>
-            <ion-textarea formControlName="Info" disabled="true"></ion-textarea>
+            <ion-textarea formControlName="Info"></ion-textarea>
         </ion-item>
         <ion-item>
             <ion-label floating>Faculty</ion-label>
-            <ion-select formControlName="FID" (ionChange)="hintMajors(eventForm.get('FID').value)" disabled="true">
+            <ion-select formControlName="FID" (ionChange)="hintMajors(eventForm.get('FID').value)">
                 <ion-option value="-1">All</ion-option>
                 <ion-option *ngFor="let f of listFaculties " value="{{f.FID}}">{{f.Name}}</ion-option>
             </ion-select>
         </ion-item>
         <ion-item>
             <ion-label floating>Major</ion-label>
-            <ion-select formControlName="MID" disabled="true">
+            <ion-select formControlName="MID">
                 <ion-option value="-1">All</ion-option>
                 <ion-option *ngFor="let m of listMajors" value="{{m.MID}}">{{m.Name}}</ion-option>
             </ion-select>
         </ion-item>
 
-        <div style="text-align: center;padding: 10px;">
-            <img *ngIf="Image" [src]="Image" style="display:block;width:100%;height:100%;margin-left:auto;margin-right:auto;" />
+        <div style="text-align: center;padding: 10px;height:250px;width:100%">
+            <div #map id="map"></div>
         </div>
 
         <div formArrayName="Event_Time">
@@ -58,11 +63,11 @@
                     <ion-card-content [formGroupName]="i">
                         <ion-item>
                             <ion-label>Start</ion-label>
-                            <ion-datetime formControlName="Time_Start" displayFormat="YYYY-MM-DD HH:mm" min={{minSelectabledate}} max={{maxSelectabledate}} disabled="true"></ion-datetime>
+                            <ion-datetime formControlName="Time_Start" displayFormat="YYYY-MM-DD HH:mm" min={{minSelectabledate}} max={{maxSelectabledate}}></ion-datetime>
                         </ion-item>
                         <ion-item *ngIf="eventForm.get('Event_Time').value[i].Time_Start">
                             <ion-label>End</ion-label>
-                            <ion-datetime formControlName="Time_End" displayFormat="YYYY-MM-DD HH:mm" min="{{eventForm.get('Event_Time').value[i].Time_Start}}" max={{maxSelectabledate}} disabled="true"></ion-datetime>
+                            <ion-datetime formControlName="Time_End" displayFormat="YYYY-MM-DD HH:mm" min="{{eventForm.get('Event_Time').value[i].Time_Start}}" max={{maxSelectabledate}}></ion-datetime>
                         </ion-item>
                     </ion-card-content>
                 </ion-card>

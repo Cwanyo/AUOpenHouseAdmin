@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Loading } from 'ionic-angular/components/loading/loading';
 
@@ -8,6 +8,7 @@ import { Game } from './../../interface/Game';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
 import firebase from 'firebase';
+import {} from '@types/googlemaps';
 
 /**
  * Generated class for the CreateGamePage page.
@@ -21,6 +22,10 @@ import firebase from 'firebase';
   templateUrl: 'create-game.html',
 })
 export class CreateGamePage {
+
+  @ViewChild("map") mapRef: ElementRef;
+  private map: google.maps.Map;
+  private gameMapMarker: google.maps.Marker;
 
   private loader: Loading;
   
@@ -50,6 +55,7 @@ export class CreateGamePage {
   }
 
   ngOnInit(){
+    this.showMap();
     this.getListOfFaculties();
 
     let d = new Date();
@@ -57,6 +63,34 @@ export class CreateGamePage {
     this.maxSelectabledate = d.getFullYear()+1;
 
     this.initGame();
+  }
+
+  showMap(){
+    //set default map location
+    const location = new google.maps.LatLng(13.612111, 100.837667);
+    //set map options
+    const options = {
+      center: location,
+      zoom: 17
+    };
+
+    this.map = new google.maps.Map(this.mapRef.nativeElement,options);
+
+    google.maps.event.addListener(this.map, 'click', event => {
+      this.placeMarker(event.latLng, this.map);
+    });
+  }
+
+  placeMarker(location, map){
+    if(this.gameMapMarker){
+      this.gameMapMarker.setPosition(location);
+    }else{
+      this.gameMapMarker = new google.maps.Marker({
+        position: location,
+        draggable: true,
+        map: map
+      });
+    }
   }
 
   initGame(){
@@ -127,10 +161,12 @@ export class CreateGamePage {
     if(game.Image == ""){
       game.Image = null;
     }
-    if(game.Location_Latitude == ""){
+    //get location from google map
+    if(this.gameMapMarker){
+      game.Location_Latitude = this.gameMapMarker.getPosition().lat().toString();
+      game.Location_Longitude = this.gameMapMarker.getPosition().lng().toString();
+    }else{
       game.Location_Latitude = null;
-    }
-    if(game.Location_Longitude == ""){
       game.Location_Longitude = null;
     }
     if(game.FID == "-1"){

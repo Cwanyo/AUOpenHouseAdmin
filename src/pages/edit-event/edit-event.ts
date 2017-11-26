@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Loading } from 'ionic-angular/components/loading/loading';
 
@@ -8,6 +8,7 @@ import { Event } from './../../interface/event';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
 import firebase from 'firebase';
+import {} from '@types/googlemaps';
 
 /**
  * Generated class for the EditEventPage page.
@@ -21,6 +22,10 @@ import firebase from 'firebase';
   templateUrl: 'edit-event.html',
 })
 export class EditEventPage {
+
+  @ViewChild("map") mapRef: ElementRef;
+  private map: google.maps.Map;
+  private eventMapMarker: google.maps.Marker;
 
   public event: Event;
   public deleteEventTime = [];
@@ -49,11 +54,13 @@ export class EditEventPage {
     private alertCtrl: AlertController,
     public loadingCtrl: LoadingController
   ) {
-    this.event = navParams.get("event");
-    console.log("Event",this.event);
   }
 
   ngOnInit(){
+    this.event = this.navParams.get("event");
+    console.log("Event",this.event);
+    
+    this.showMap();
     this.getListOfFaculties();
 
     let d = new Date();
@@ -61,6 +68,39 @@ export class EditEventPage {
     this.maxSelectabledate = d.getFullYear()+1;
 
     this.initEvent();
+  }
+
+  showMap(){
+    //set default map location
+    const location = new google.maps.LatLng(13.612111, 100.837667);
+    //set map options
+    const options = {
+      center: location,
+      zoom: 17
+    };
+
+    this.map = new google.maps.Map(this.mapRef.nativeElement,options);
+
+    google.maps.event.addListener(this.map, 'click', event => {
+      this.placeMarker(event.latLng, this.map);
+    });
+  }
+
+  placeMarker(location, map){
+    if(this.eventMapMarker){
+      this.eventMapMarker.setPosition(location);
+    }else{
+      this.eventMapMarker = new google.maps.Marker({
+        position: location,
+        draggable: true,
+        map: map
+      });
+    }
+  }
+
+  removeLocation(){
+    this.eventMapMarker.setMap(null);
+    this.eventMapMarker = null;
   }
   
   initEvent(){
@@ -70,10 +110,11 @@ export class EditEventPage {
     }else{
       this.Image = this.event.Image;
     }
-    if(this.event.Location_Latitude == null){
+    if(this.event.Location_Latitude&&this.event.Location_Longitude){
+      this.placeMarker(new google.maps.LatLng(Number(this.event.Location_Latitude),Number(this.event.Location_Longitude)),this.map);
+      this.map.setCenter(this.eventMapMarker.getPosition());
+    }else{
       this.event.Location_Latitude = "";
-    }
-    if(this.event.Location_Longitude == null){
       this.event.Location_Longitude = "";
     }
     if(this.event.FID == null){
@@ -159,10 +200,11 @@ export class EditEventPage {
           if(event.Image == ""){
             event.Image = null;
           }
-          if(event.Location_Latitude == ""){
+          if(this.eventMapMarker){
+            event.Location_Latitude = this.eventMapMarker.getPosition().lat().toString();
+            event.Location_Longitude = this.eventMapMarker.getPosition().lng().toString();
+          }else{
             event.Location_Latitude = null;
-          }
-          if(event.Location_Longitude == ""){
             event.Location_Longitude = null;
           }
           if(event.FID == "-1"){
