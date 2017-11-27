@@ -112,6 +112,19 @@ export class RestApiProvider {
     });
   }
 
+  getEventTimeAttendess(eid:number, tid: number){
+    let path = this.url+'/events/'+eid+'/times/'+tid+'/attendees';
+
+    return new Promise((resolve, reject) => {
+      this.http.get(path, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
   addEvent(event){
     let path = this.url+'/events';
 

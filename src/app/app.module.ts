@@ -23,6 +23,7 @@ import { EventManagementPage } from './../pages/event-management/event-managemen
 import { CreateEventPage } from '../pages/create-event/create-event';
 import { EditEventPage } from './../pages/edit-event/edit-event';
 import { ViewEventPage } from './../pages/view-event/view-event';
+import { ViewAttendeesPage } from './../pages/view-attendees/view-attendees';
 
 //Game Pages
 import { GameManagementPage } from './../pages/game-management/game-management';
@@ -54,6 +55,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     CreateEventPage,
     EditEventPage,
     ViewEventPage,
+    ViewAttendeesPage,
     GameManagementPage,
     CreateGamePage,
     EditGamePage,
@@ -81,6 +83,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     CreateEventPage,
     EditEventPage,
     ViewEventPage,
+    ViewAttendeesPage,
     GameManagementPage,
     CreateGamePage,
     EditGamePage,

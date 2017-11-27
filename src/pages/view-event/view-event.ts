@@ -1,3 +1,4 @@
+import { ViewAttendeesPage } from './../view-attendees/view-attendees';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Loading } from 'ionic-angular/components/loading/loading';
@@ -27,6 +28,8 @@ export class ViewEventPage {
   private eventMapMarker: google.maps.Marker;
 
   public event: Event;
+
+  public listEventTimeAttendess = [];
 
   private loader: Loading;
 
@@ -144,12 +147,34 @@ export class ViewEventPage {
           Time_Start: [this.convertTime(t.Time_Start), [Validators.required]],
           Time_End: [this.convertTime(t.Time_End), [Validators.required]]
         }));
+        this.getNumberOfEventTimeAttendess(t.TID);
         control.disable();
       });
     })
     .catch(error =>{
       console.log("ERROR API : getEventTime",error);
     })
+  }
+
+  getNumberOfEventTimeAttendess(tid: number){
+    this.restApiProvider.getEventTimeAttendess(0,tid)
+    .then(result => {
+      //this.listEventTimeAttendess.push(result);
+      this.listEventTimeAttendess[tid.toString()] = result;
+      console.log(this.listEventTimeAttendess);
+    })
+    .catch(error =>{
+      //this.listEventTimeAttendess.push([]);
+      this.listEventTimeAttendess[tid.toString()] = [];
+      console.log("ERROR API : getEventTimeAttendess",error);
+    });
+  }
+
+  viewAttendees(tid: number){
+    console.log("viewAttendees", tid);
+    let attendees = this.listEventTimeAttendess[tid];
+
+    this.navCtrl.push(ViewAttendeesPage, {attendees: attendees})
   }
 
   getListOfFaculties(){

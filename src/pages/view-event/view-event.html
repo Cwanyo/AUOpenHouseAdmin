@@ -69,6 +69,16 @@
                             <ion-label>End</ion-label>
                             <ion-datetime formControlName="Time_End" displayFormat="YYYY-MM-DD HH:mm" min="{{eventForm.get('Event_Time').value[i].Time_Start}}" max={{maxSelectabledate}}></ion-datetime>
                         </ion-item>
+
+                        <div *ngIf="listEventTimeAttendess[eventForm.get('Event_Time').value[i].TID]">
+                            <button *ngIf="listEventTimeAttendess[eventForm.get('Event_Time').value[i].TID].length > 0" ion-button full color="secondary" (click)="viewAttendees(eventForm.get('Event_Time').value[i].TID)">
+                                <ion-icon name="people"></ion-icon>&nbsp;&nbsp;Attendees : {{listEventTimeAttendess[eventForm.get('Event_Time').value[i].TID].length}}
+                            </button>
+                            <button *ngIf="listEventTimeAttendess[eventForm.get('Event_Time').value[i].TID].length <= 0" ion-button full color="danger">
+                                <ion-icon name="people"></ion-icon>&nbsp;&nbsp;Attendees : {{listEventTimeAttendess[eventForm.get('Event_Time').value[i].TID].length}}
+                            </button>
+                        </div>
+
                     </ion-card-content>
                 </ion-card>
 
