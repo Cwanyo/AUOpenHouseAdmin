@@ -1,6 +1,6 @@
 {
-    "name": "Ionic",
-    "short_name": "Ionic",
+    "name": "AuOpenHouseAdmin",
+    "short_name": "AuOpenHouseAdmin",
     "start_url": "index.html",
     "display": "standalone",
     "icons": [{
