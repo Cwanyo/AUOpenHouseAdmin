@@ -9,6 +9,7 @@ import { Event } from './../../interface/event';
 import { EditEventPage } from './../edit-event/edit-event';
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
+import {} from '@types/googlemaps';
 
 /**
  * Generated class for the ViewEventPage page.

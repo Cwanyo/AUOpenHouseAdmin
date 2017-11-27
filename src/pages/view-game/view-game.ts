@@ -8,6 +8,7 @@ import { Game } from './../../interface/Game';
 import { EditGamePage } from './../edit-game/edit-game';
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
+import {} from '@types/googlemaps';
 
 /**
  * Generated class for the ViewGamePage page.
