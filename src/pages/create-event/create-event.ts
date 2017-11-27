@@ -100,6 +100,7 @@ export class CreateEventPage {
       Name: ["", [Validators.required]],
       Info: ["", [Validators.required]],
       Image: "",
+      State: ["1", [Validators.required]],
       Location_Latitude: "",
       Location_Longitude: "",
       Event_Time: this.formBuilder.array([

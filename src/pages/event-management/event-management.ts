@@ -25,6 +25,8 @@ export class EventManagementPage {
 
   private loader: Loading;
 
+  public eventState = "1";
+
   public events = [];
   public faculties = [];
 
@@ -44,7 +46,7 @@ export class EventManagementPage {
   }
 
   doRefresh(refresher) {
-    this.restApiProvider.getEvents(1)
+    this.restApiProvider.getEvents(Number(this.eventState))
     .then(result => {
       this.rawListOfEvents = result;
       this.faculties = Object.keys(this.groupByFaculty(result));
@@ -59,7 +61,7 @@ export class EventManagementPage {
 
   getListOfEvents(){
     this.presentLoading();
-    this.restApiProvider.getEvents(1)
+    this.restApiProvider.getEvents(Number(this.eventState))
     .then(result => {
       this.loader.dismiss();
       this.rawListOfEvents = result;
@@ -108,7 +110,7 @@ export class EventManagementPage {
   }
 
   eventDelete(eid: number){
-    console.log("Delete event:",eid);
+    console.log("deleteEvent:",eid);
     let confirm = this.alertCtrl.create({
       title: "Alert!",
       message: "Are you sure that you want to delete this event?",

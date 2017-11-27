@@ -98,6 +98,7 @@ export class CreateGamePage {
       Name: ["", [Validators.required]],
       Info: ["", [Validators.required]],
       Image: "",
+      State: ["1", [Validators.required]],
       Time_Start: ["", [Validators.required]],
       Time_End: ["", [Validators.required]],
       Location_Latitude: "",

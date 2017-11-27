@@ -131,7 +131,7 @@ export class EditGamePage {
       Image: this.game.Image.toString(),
       Time_Start: [this.convertTime(this.game.Time_Start), [Validators.required]],
       Time_End: [this.convertTime(this.game.Time_End), [Validators.required]],
-      State: this.game.State.toString(),
+      State: [this.game.State.toString(), [Validators.required]],
       Location_Latitude: this.game.Location_Latitude.toString(),
       Location_Longitude: this.game.Location_Longitude.toString(),
       Game_Question: this.formBuilder.array([]),

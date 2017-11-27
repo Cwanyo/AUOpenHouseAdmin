@@ -38,6 +38,13 @@
                 <ion-option *ngFor="let m of listMajors" value="{{m.MID}}">{{m.Name}}</ion-option>
             </ion-select>
         </ion-item>
+        <ion-item>
+            <ion-label floating>State</ion-label>
+            <ion-select formControlName="State">
+                <ion-option value="1">Enable</ion-option>
+                <ion-option value="0">Disable</ion-option>
+            </ion-select>
+        </ion-item>
 
         <div style="text-align: center;padding: 10px;">
             <input id="uploadImage" type="file" accept="image/jpeg" capture style="display: none;" (change)="uploadImage($event)">

@@ -24,6 +24,8 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
 export class GameManagementPage {
 
   private loader: Loading;
+
+  public gameState = "1";
   
   public games = [];
   public faculties = [];
@@ -44,7 +46,7 @@ export class GameManagementPage {
   }
 
   doRefresh(refresher) {
-    this.restApiProvider.getGames(1)
+    this.restApiProvider.getGames(Number(this.gameState))
     .then(result => {
       this.rawListOfGames = result;
       this.faculties = Object.keys(this.groupByFaculty(result));
@@ -59,7 +61,7 @@ export class GameManagementPage {
 
   getListOfGames(){
     this.presentLoading();
-    this.restApiProvider.getGames(1)
+    this.restApiProvider.getGames(Number(this.gameState))
     .then(result => {
       this.loader.dismiss();
       this.rawListOfGames = result;

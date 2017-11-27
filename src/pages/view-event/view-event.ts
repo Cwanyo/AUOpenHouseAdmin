@@ -117,7 +117,7 @@ export class ViewEventPage {
       Name: [this.event.Name.toString(), [Validators.required]],
       Info: [this.event.Info.toString(), [Validators.required]],
       Image: this.event.Image.toString(),
-      State: this.event.State.toString(),
+      State: [this.event.State.toString(), [Validators.required]],
       Location_Latitude: this.event.Location_Latitude.toString(),
       Location_Longitude: this.event.Location_Longitude.toString(),
       Event_Time: this.formBuilder.array([]),
