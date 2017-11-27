@@ -6,6 +6,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { MyApp } from './app.component';
 
+import { Autosize} from '../components/autosize/autosize';
+
 //Firebase
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -61,7 +63,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     EditGamePage,
     ViewGamePage,
     AdminAccountManagementPage,
-    AdminAccountApprovalPage
+    AdminAccountApprovalPage,
+    Autosize
   ],
   imports: [
     BrowserModule,
