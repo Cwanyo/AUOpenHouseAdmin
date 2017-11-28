@@ -22,7 +22,7 @@
             </ion-card-header>
 
             <ion-card-content>
-                User must change use AU Google Account Only in order to access to the system.
+                User must use AU Google Account in order to access to the system
             </ion-card-content>
 
         </ion-card>
@@ -41,8 +41,8 @@
 
     <div *ngIf="!user">
         <button class="button-google" (click)="login('google')">
-                    <ion-icon name="logo-google"></ion-icon>&nbsp;&nbsp;Log in with AU Google Account
-                </button>
+            <ion-icon name="logo-google"></ion-icon>&nbsp;&nbsp;Log in with AU Google Account
+        </button>
     </div>
 
     <div *ngIf="user && auAccount">
