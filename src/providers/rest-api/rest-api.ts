@@ -151,7 +151,20 @@ export class RestApiProvider {
     });
   }
 
-  deleteEvent(eid: number){
+  enableEvent(eid: number){
+    let path = this.url+'/events/'+eid;
+
+    return new Promise((resolve, reject) => {
+      this.http.patch(path, null, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  disableEvent(eid: number){
     let path = this.url+'/events/'+eid;
 
     return new Promise((resolve, reject) => {
@@ -216,7 +229,20 @@ export class RestApiProvider {
     });
   }
 
-  deleteGame(gid: number){
+  enableGame(gid: number){
+    let path = this.url+'/games/'+gid;
+
+    return new Promise((resolve, reject) => {
+      this.http.patch(path, null, {withCredentials: true})
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  disableGame(gid: number){
     let path = this.url+'/games/'+gid;
 
     return new Promise((resolve, reject) => {

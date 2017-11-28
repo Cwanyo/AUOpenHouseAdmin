@@ -62,13 +62,19 @@
                         <button ion-button (click)="gameEdit(game.GID)">
                             <ion-icon name="create"></ion-icon>Edit
                         </button>
-                        <button ion-button color="danger" (click)="gameDelete(game.GID)">
+                        <button ion-button color="danger" (click)="gameDisable(game.GID)">
                             <ion-icon name="remove-circle"></ion-icon>Disable
                         </button>
                     </ion-item-options>
                 </ion-item-sliding>
 
             </ion-item-group>
+
+            <ion-card *ngIf="faculties.length==0">
+
+                <ion-card-header text-center>Empty</ion-card-header>
+
+            </ion-card>
 
         </ion-list>
 
@@ -94,10 +100,19 @@
                         <button ion-button (click)="gameEdit(game.GID)">
                             <ion-icon name="create"></ion-icon>Edit
                         </button>
+                        <button ion-button color="secondary" (click)="gameEnable(game.GID)">
+                            <ion-icon name="checkmark-circle"></ion-icon>Enable
+                        </button>
                     </ion-item-options>
                 </ion-item-sliding>
 
             </ion-item-group>
+
+            <ion-card *ngIf="faculties.length==0">
+
+                <ion-card-header text-center>Empty</ion-card-header>
+
+            </ion-card>
 
         </ion-list>
 

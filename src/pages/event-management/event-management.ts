@@ -109,23 +109,23 @@ export class EventManagementPage {
     this.navCtrl.push(EditEventPage, {event: event, "parentPage": this});
   }
 
-  eventDelete(eid: number){
-    console.log("deleteEvent:",eid);
+  eventEnable(eid: number){
+    console.log("eventEnable:",eid);
     let confirm = this.alertCtrl.create({
       title: "Alert!",
-      message: "Are you sure that you want to delete this event?",
+      message: "Are you sure that you want to enable this event?",
       enableBackdropDismiss: false,
       buttons: [{
         text: "Disagree"
       },{
         text: "Agree",
         handler: () => {
-          //TODO - delete the event (use api)
+          //TODO - event the event (use api)
           console.log('Agree clicked');
           this.presentLoading();
-          this.restApiProvider.deleteEvent(eid)
+          this.restApiProvider.enableEvent(eid)
           .then(result => {
-            console.log("delete event success");
+            console.log("enable event success");
             this.loader.dismiss();
             this.getListOfEvents();
             var jsonData: any = result;
@@ -135,7 +135,49 @@ export class EventManagementPage {
           })
           .catch(error =>{
             this.loader.dismiss();
-            console.log("ERROR API : deleteEvent",error);
+            console.log("ERROR API : enableEvent",error);
+            if(error.status == 0){
+              //show error message
+              this.presentAlert("Cannot connect to server");
+            }else{
+              var jsonData = JSON.parse(error.error);
+              //show error message
+              this.presentAlert(jsonData.message);
+            }
+          });
+        }
+      }]
+    });
+    confirm.present();
+  }
+
+  eventDisable(eid: number){
+    console.log("eventDisable:",eid);
+    let confirm = this.alertCtrl.create({
+      title: "Alert!",
+      message: "Are you sure that you want to disable this event?",
+      enableBackdropDismiss: false,
+      buttons: [{
+        text: "Disagree"
+      },{
+        text: "Agree",
+        handler: () => {
+          //TODO - disable the event (use api)
+          console.log('Agree clicked');
+          this.presentLoading();
+          this.restApiProvider.disableEvent(eid)
+          .then(result => {
+            console.log("disabled event success");
+            this.loader.dismiss();
+            this.getListOfEvents();
+            var jsonData: any = result;
+            if(jsonData.isSuccess){
+              this.presentAlert(jsonData.message);
+            }
+          })
+          .catch(error =>{
+            this.loader.dismiss();
+            console.log("ERROR API : disableEvent",error);
             if(error.status == 0){
               //show error message
               this.presentAlert("Cannot connect to server");

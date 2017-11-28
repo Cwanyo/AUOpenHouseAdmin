@@ -109,23 +109,23 @@ export class GameManagementPage {
     this.navCtrl.push(EditGamePage, {game: game, "parentPage": this});
   }
 
-  gameDelete(gid: number){
-    console.log("Delete game:",gid);
+  gameEnable(gid: number){
+    console.log("enable game:",gid);
     let confirm = this.alertCtrl.create({
       title: "Alert!",
-      message: "Are you sure that you want to delete this game?",
+      message: "Are you sure that you want to enable this game?",
       enableBackdropDismiss: false,
       buttons: [{
         text: "Disagree"
       },{
         text: "Agree",
         handler: () => {
-          //TODO - delete the game (use api)
+          //TODO - enable the game (use api)
           console.log('Agree clicked');
           this.presentLoading();
-          this.restApiProvider.deleteGame(gid)
+          this.restApiProvider.enableGame(gid)
           .then(result => {
-            console.log("delete game success");
+            console.log("enable game success");
             this.loader.dismiss();
             this.getListOfGames();
             var jsonData: any = result;
@@ -135,7 +135,49 @@ export class GameManagementPage {
           })
           .catch(error =>{
             this.loader.dismiss();
-            console.log("ERROR API : deleteGame",error);
+            console.log("ERROR API : enableGame",error);
+            if(error.status == 0){
+              //show error message
+              this.presentAlert("Cannot connect to server");
+            }else{
+              var jsonData = JSON.parse(error.error);
+              //show error message
+              this.presentAlert(jsonData.message);
+            }
+          });
+        }
+      }]
+    });
+    confirm.present();
+  }
+
+  gameDisable(gid: number){
+    console.log("disable game:",gid);
+    let confirm = this.alertCtrl.create({
+      title: "Alert!",
+      message: "Are you sure that you want to disable this game?",
+      enableBackdropDismiss: false,
+      buttons: [{
+        text: "Disagree"
+      },{
+        text: "Agree",
+        handler: () => {
+          //TODO - disable the game (use api)
+          console.log('Agree clicked');
+          this.presentLoading();
+          this.restApiProvider.disableGame(gid)
+          .then(result => {
+            console.log("disable game success");
+            this.loader.dismiss();
+            this.getListOfGames();
+            var jsonData: any = result;
+            if(jsonData.isSuccess){
+              this.presentAlert(jsonData.message);
+            }
+          })
+          .catch(error =>{
+            this.loader.dismiss();
+            console.log("ERROR API : disableGame",error);
             if(error.status == 0){
               //show error message
               this.presentAlert("Cannot connect to server");
