@@ -8,14 +8,27 @@
 
     <ion-navbar>
         <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
-        </button>
+                <ion-icon name="menu"></ion-icon>
+            </button>
         <ion-title>Home</ion-title>
     </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
+
+    <div *ngIf="user != null">
+        <ion-card>
+
+            <ion-card-header text-wrap>
+                <span style="font-weight: bold;font-size: 20px">Welcome</span>,<br> {{user.displayName}}
+            </ion-card-header>
+
+            <ion-card-content>
+                Today, {{splitTime()}}
+            </ion-card-content>
+
+        </ion-card>
+    </div>
 
 </ion-content>

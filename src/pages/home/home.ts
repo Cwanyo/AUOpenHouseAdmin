@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
+
 /**
  * Generated class for the HomePage page.
  *
@@ -14,11 +17,30 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private user: firebase.User;
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    private afAuth: AngularFireAuth
+  ) {
+      this.userAuth();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad HomePage');
+  userAuth(){
+    this.afAuth.authState.subscribe(user => {
+      if (!user) {
+        this.user = null;
+        return;
+      }
+      this.user = user;
+    });
+  }
+
+  splitTime(){
+    let time = new Date().toString();
+    let temp = time.split(" ");
+    return temp[2]+" "+temp[1]+" "+temp[3];
   }
 
 }

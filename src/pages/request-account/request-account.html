@@ -1,6 +1,5 @@
 <!--
   Generated template for the RequestAccountPage page.
-
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
@@ -15,10 +14,35 @@
 
 <ion-content padding>
 
+    <div *ngIf="!auAccount">
+        <ion-card>
+
+            <ion-card-header>
+                Step 1: Email Checking
+            </ion-card-header>
+
+            <ion-card-content>
+                User must change use AU Google Account Only in order to access to the system.
+            </ion-card-content>
+
+        </ion-card>
+        <ion-card>
+
+            <ion-card-header>
+                Step 2: Login
+            </ion-card-header>
+
+            <ion-card-content>
+                Click the Login button below
+            </ion-card-content>
+
+        </ion-card>
+    </div>
+
     <div *ngIf="!user">
         <button class="button-google" (click)="login('google')">
-            <ion-icon name="logo-google"></ion-icon>&nbsp;&nbsp;Log in with AU Google Account
-        </button>
+                    <ion-icon name="logo-google"></ion-icon>&nbsp;&nbsp;Log in with AU Google Account
+                </button>
     </div>
 
     <div *ngIf="user && auAccount">
