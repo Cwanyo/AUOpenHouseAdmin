@@ -63,7 +63,11 @@
 
         <div style="text-align: center;padding: 10px;height:250px;width:100%">
             <div #map id="map"></div>
+            <button *ngIf="gameMapMarker!=null" ion-button full color="danger" (click)="removeLocation()">
+                <ion-icon name="trash"></ion-icon>&nbsp;Remove Location
+            </button>
         </div>
+        <div class="spacer"></div>
 
         <ion-card>
             <ion-card-header text-center>Game Time</ion-card-header>

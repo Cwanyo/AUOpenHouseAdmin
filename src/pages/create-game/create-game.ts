@@ -93,6 +93,11 @@ export class CreateGamePage {
     }
   }
 
+  removeLocation(){
+    this.gameMapMarker.setMap(null);
+    this.gameMapMarker = null;
+  }
+
   initGame(){
     this.gameForm = this.formBuilder.group({
       Name: ["", [Validators.required]],
