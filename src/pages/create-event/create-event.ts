@@ -95,6 +95,11 @@ export class CreateEventPage {
     }
   }
 
+  removeLocation(){
+    this.eventMapMarker.setMap(null);
+    this.eventMapMarker = null;
+  }
+
   initEvent(){
     this.eventForm = this.formBuilder.group({
       Name: ["", [Validators.required]],
