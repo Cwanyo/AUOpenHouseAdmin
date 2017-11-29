@@ -7,6 +7,7 @@ import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Event } from './../../interface/event';
 
 import { EditEventPage } from './../edit-event/edit-event';
+import { ChatPage } from './../chat/chat';
 
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 import {} from '@types/googlemaps';
@@ -90,6 +91,11 @@ export class ViewEventPage {
         map: map
       });
     }
+  }
+
+  viewChat(){
+    console.log("viewChat");
+    this.navCtrl.push(ChatPage, {eid: this.event.EID});
   }
 
   initEvent(){
