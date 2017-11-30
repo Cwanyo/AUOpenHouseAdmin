@@ -348,7 +348,7 @@ export class CreateGamePage {
       return;
     }
     this.presentLoading();
-    let photoPath = "Images/Events/"+new Date().getTime()+".jpg";
+    let photoPath = "Images/Games/"+new Date().getTime()+".jpg";
     const storageRef = this.storage.ref(photoPath);
     storageRef.putString(this.Image, "data_url")
     .then(() =>{

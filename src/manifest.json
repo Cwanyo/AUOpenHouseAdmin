@@ -1,6 +1,6 @@
 {
-    "name": "AuOpenHouseAdmin",
-    "short_name": "AuOpenHouseAdmin",
+    "name": "AUOpenHouseAdmin",
+    "short_name": "AUOpenHouseAdmin",
     "start_url": "index.html",
     "display": "standalone",
     "icons": [{

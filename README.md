@@ -1,1 +1,1 @@
-# Au Open House (Admin & Staff)
+# AU Open House (Admin & Staff)

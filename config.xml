@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.wvn.auopenhouse" version="5.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>AuOpenHouseAdmin</name>
-    <description>Au Open House app for admin and staff</description>
-     <author email="manwan444@gmail.com" href="https://github.com/Cwanyo/auopenhouseadmin">Cwan</author>
+<widget id="edu.au.auopenhouseadmin" version="6.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>AUOpenHouseAdmin</name>
+    <description>AU Open House app for admin and staff</description>
+     <author email="manwan444@gmail.com" href="https://github.com/Cwanyo/AUOpenHouseAdmin">Cwan</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
