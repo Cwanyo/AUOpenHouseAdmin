@@ -6,7 +6,7 @@ Link to our [website](https://auopenhouseadmin.firebaseapp.com)
 
 # Description
 
-The application that allows authority to access and manage information.
+The application that allow authorities to access and manage information.
 
 # Features
 
