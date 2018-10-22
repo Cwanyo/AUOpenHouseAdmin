@@ -14,8 +14,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class RestApiProvider {
 
-  // public url = 'https://auopenhouse.herokuapp.com/api/authority';
-  public url = 'http://localhost:3000/api/authority';
+  public url = 'https://auopenhouse.herokuapp.com/api/authority';
+  // public url = 'http://localhost:3000/api/authority';
 
   constructor(public http: HttpClient) {
     console.log('Hello RestApiProvider Provider');
