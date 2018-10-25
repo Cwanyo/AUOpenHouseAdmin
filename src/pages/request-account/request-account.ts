@@ -150,9 +150,13 @@ export class RequestAccountPage {
         //show error message
         this.presentAlert("Cannot connect to server");
       }else{
-        var jsonData = JSON.parse(error.error);
         //show error message
-        this.presentAlert(jsonData.message);
+        try {
+          var jsonData = JSON.parse(error.error);
+          this.presentAlert(jsonData.message);
+        } catch (e) {
+          this.presentAlert(error.statusText);
+        }
       }
     })
   }
