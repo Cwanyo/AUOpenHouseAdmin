@@ -14,8 +14,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class RestApiProvider {
 
-  public url = 'https://auopenhouse-loadbalancer.herokuapp.com/api/authority';
-  // public url = 'https://auopenhouse.herokuapp.com/api/authority';
+  // public url = 'https://auopenhouse-loadbalancer.herokuapp.com/api/authority';
+  public url = 'https://auopenhouse.herokuapp.com/api/authority';
   // public url = 'http://localhost:8080/api/authority';
 
   constructor(public http: HttpClient) {
